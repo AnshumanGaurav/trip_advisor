@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VoyageOptima | Smart Travel Route Date Optimizer</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- CSS Stylesheet -->
+    <link rel="stylesheet" href="/static/style.css?v=2">
+    
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <div class="app-container">
+        
+        <!-- SIDEBAR: Trip Route Builder -->
+        <aside class="sidebar glass-panel">
+            <div class="logo-area">
+                <div class="logo-icon">
+                    <i data-lucide="compass" class="logo-compass"></i>
+                </div>
+                <div>
+                    <h1>VoyageOptima</h1>
+                    <p class="subtitle">Multi-Stop Route Cost Optimizer</p>
+                </div>
+            </div>
+            
+            <form id="route-form" class="route-form">
+                
+                <!-- STARTING POINT -->
+                <div class="form-group">
+                    <label for="source-city">
+                        <i data-lucide="map-pin" class="label-icon source-color"></i> Starting Location (Source)
+                    </label>
+                    <div class="input-wrapper autocomplete-wrapper">
+                        <input type="text" id="source-city" placeholder="e.g. Delhi, Mumbai, Agra" required value="Bangalore" autocomplete="off">
+                        <ul class="autocomplete-dropdown" id="source-city-dropdown"></ul>
+                    </div>
+                </div>
+                
+                <!-- INTERMEDIATE STOPS CONTAINER -->
+                <div class="stops-section">
+                    <div class="section-header">
+                        <h2>Intermediate Stops (In Order)</h2>
+                        <button type="button" id="add-stop-btn" class="btn btn-secondary btn-sm">
+                            <i data-lucide="plus"></i> Add Stop
+                        </button>
+                    </div>
+                    
+                    <div id="stops-list" class="stops-list">
+                        <!-- Dynamic Stops will be injected here -->
+                    </div>
+                </div>
+                
+                <!-- FINAL DESTINATION -->
+                <div class="destination-section">
+                    <div class="leg-connector-line"></div>
+                    
+                    <div class="form-group">
+                        <label for="destination-transport">
+                            <i data-lucide="git-commit" class="label-icon divider-icon"></i> Final Transport Mode
+                        </label>
+                        <div class="transport-selector">
+                            <label class="transport-option">
+                                <input type="radio" name="destination_transport" value="flight" checked>
+                                <span class="transport-btn"><i data-lucide="plane"></i> Flight</span>
+                            </label>
+                            <label class="transport-option">
+                                <input type="radio" name="destination_transport" value="train">
+                                <span class="transport-btn"><i data-lucide="train"></i> Train</span>
+                            </label>
+                            <label class="transport-option">
+                                <input type="radio" name="destination_transport" value="bus">
+                                <span class="transport-btn"><i data-lucide="bus"></i> Bus</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="destination-city">
+                            <i data-lucide="flag" class="label-icon dest-color"></i> Final Destination
+                        </label>
+                        <div class="input-wrapper autocomplete-wrapper">
+                            <input type="text" id="destination-city" placeholder="e.g. Udaipur, Goa, Varanasi" required value="Bangalore" autocomplete="off">
+                            <ul class="autocomplete-dropdown" id="destination-city-dropdown"></ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- SEARCH BASE DATE -->
+                <div class="form-group">
+                    <label for="start-date">
+                        <i data-lucide="calendar" class="label-icon date-color"></i> Search Start Date
+                    </label>
+                    <div class="input-wrapper">
+                        <input type="date" id="start-date" required>
+                    </div>
+                    <span class="field-hint">We will scan a 1-week window starting from this date.</span>
+                </div>
+                
+                <!-- SUBMIT -->
+                <button type="submit" class="btn btn-primary btn-block" id="optimize-btn">
+                    <i data-lucide="sparkles"></i> Find Cheapest Dates
+                </button>
+            </form>
+        </aside>
+        
+        <!-- MAIN DASHBOARD AREA -->
+        <main class="dashboard-main">
+            
+            <!-- STATE 1: Empty/Welcome State -->
+            <div id="welcome-state" class="state-panel active">
+                <div class="welcome-card glass-panel">
+                    <div class="welcome-globe">
+                        <i data-lucide="globe" class="globe-animated"></i>
+                    </div>
+                    <h2>Optimize Your Multi-Stop Journey</h2>
+                    <p>
+                        VoyageOptima models complex transport rates, weekly fluctuations, and stay-lengths to map the cheapest calendar days for multi-leg trips. 
+                    </p>
+                    <div class="welcome-features">
+                        <div class="feature-item">
+                            <i data-lucide="trending-down"></i>
+                            <div>
+                                <h4>Cost Analytics</h4>
+                                <p>Simulates real-world dynamic ticketing spikes to find hidden savings.</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <i data-lucide="line-chart"></i>
+                            <div>
+                                <h4>Interactive Charts</h4>
+                                <p>Click any point on the cost timeline to preview the trip details instantly.</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <i data-lucide="calendar-check"></i>
+                            <div>
+                                <h4>Flexible Stays</h4>
+                                <p>Maintains your exact length of stay in each destination automatically.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary btn-lg" id="welcome-start-btn">Build My Route</button>
+                </div>
+            </div>
+            
+            <!-- STATE 2: Loading State -->
+            <div id="loading-state" class="state-panel">
+                <div class="loading-card glass-panel">
+                    <div class="radar-container">
+                        <div class="radar-ring"></div>
+                        <div class="radar-ring"></div>
+                        <div class="radar-ring"></div>
+                        <i data-lucide="search" class="radar-icon"></i>
+                    </div>
+                    <h3 id="loading-title">Scanning Travel Window</h3>
+                    <p id="loading-subtitle">Querying simulated travel API endpoints for pricing & availability...</p>
+                    
+                    <div class="loading-logs">
+                        <div class="log-line active" id="log-1"><i data-lucide="check-circle-2"></i> Fetching distances & coordinates...</div>
+                        <div class="log-line" id="log-2"><i data-lucide="circle-dashed" class="spin"></i> Querying flight, train, and bus databases...</div>
+                        <div class="log-line" id="log-3"><i data-lucide="circle-dashed"></i> Summing up multi-leg combinations...</div>
+                        <div class="log-line" id="log-4"><i data-lucide="circle-dashed"></i> Identifying optimal cost valley...</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- STATE 3: Results Dashboard -->
+            <div id="results-state" class="state-panel">
+                
+                <!-- TOP STATS CARDS -->
+                <section class="stats-grid">
+                    <!-- CHEAPEST DATE (HERO) -->
+                    <div class="stat-card glass-panel highlight-card">
+                        <div class="card-glow"></div>
+                        <div class="stat-icon-wrapper savings-icon">
+                            <i data-lucide="award"></i>
+                        </div>
+                        <div class="stat-info">
+                            <p class="stat-label">Best Start Date</p>
+                            <h3 id="best-date-display">-</h3>
+                            <p class="stat-helper text-emerald" id="savings-display"><i data-lucide="trending-down"></i> Save -</p>
+                        </div>
+                    </div>
+                    
+                    <!-- BEST TOTAL COST -->
+                    <div class="stat-card glass-panel">
+                        <div class="stat-icon-wrapper cost-icon">
+                            <i data-lucide="credit-card"></i>
+                        </div>
+                        <div class="stat-info">
+                            <p class="stat-label">Cheapest Total Cost</p>
+                            <h3 id="best-cost-display">-</h3>
+                            <p class="stat-helper text-muted">All legs included</p>
+                        </div>
+                    </div>
+                    
+                    <!-- AVERAGE TRIP COST -->
+                    <div class="stat-card glass-panel">
+                        <div class="stat-icon-wrapper avg-icon">
+                            <i data-lucide="bar-chart-2"></i>
+                        </div>
+                        <div class="stat-info">
+                            <p class="stat-label">Average Trip Cost</p>
+                            <h3 id="avg-cost-display">-</h3>
+                            <p class="stat-helper text-muted" id="options-count-display">From 30 options scanned</p>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- CHART CONTAINER -->
+                <section class="chart-section glass-panel">
+                    <div class="chart-header">
+                        <div>
+                            <h3>Cost Trend Dashboard</h3>
+                            <p class="subtitle">Total Trip Cost vs. Departure Date (Next 30 Days)</p>
+                        </div>
+                        <div class="chart-legend">
+                            <span class="legend-cheapest"><span class="dot"></span> Best Date</span>
+                            <span class="legend-standard"><span class="dot"></span> Other Dates</span>
+                            <span class="legend-soldout"><span class="dot"></span> Sold Out / Unavailable</span>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-wrapper">
+                        <canvas id="cost-chart"></canvas>
+                    </div>
+                    
+                    <div class="chart-footer-hint">
+                        <i data-lucide="info"></i>
+                        <span><strong>Interactive Chart:</strong> Click on any node on the line chart above to preview the itinerary breakdown for that departure date.</span>
+                    </div>
+                </section>
+                
+                <!-- ITINERARY TIMELINE & BREAKDOWN -->
+                <section class="details-grid">
+                    
+                    <!-- LEFT COLUMN: Timeline -->
+                    <div class="timeline-column glass-panel">
+                        <div class="panel-header">
+                            <h3>Itinerary Timeline</h3>
+                            <p class="subtitle" id="timeline-subtitle">Detailed breakdown for trip starting on -</p>
+                        </div>
+                        
+                        <!-- Interactive Date Selector Strip -->
+                        <div id="date-selector-strip" class="date-selector-strip"></div>
+                        
+                        <div id="timeline-container" class="timeline-container">
+                            <!-- Dynamic Timeline legs injected here -->
+                        </div>
+                    </div>
+                    
+                    <!-- RIGHT COLUMN: Leg Summaries Card / Information -->
+                    <div class="summary-column glass-panel">
+                        <div class="panel-header">
+                            <h3>Journey Summary</h3>
+                            <p class="subtitle">Key insights and details</p>
+                        </div>
+                        
+                        <div class="journey-stats-card">
+                            <div class="journey-summary-row">
+                                <span class="label">Total Stops:</span>
+                                <span id="summary-stops-val" class="value">-</span>
+                            </div>
+                            <div class="journey-summary-row">
+                                <span class="label">Total Nights:</span>
+                                <span id="summary-nights-val" class="value">-</span>
+                            </div>
+                            <div class="journey-summary-row">
+                                <span class="label">Total Distance:</span>
+                                <span id="summary-distance-val" class="value">-</span>
+                            </div>
+                        </div>
+                        
+                        <div class="travel-advisory-card">
+                            <div class="advisory-icon"><i data-lucide="shield-check"></i></div>
+                            <div>
+                                <h4>Voyage Guarantee</h4>
+                                <p>We automatically filter out any start dates that contain sold-out legs, ensuring 100% reservation confidence.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </section>
+                
+            </div>
+            
+        </main>
+        
+    </div>
+    
+    <!-- Lucide Icon Initializer -->
+    <script>
+        lucide.createIcons();
+    </script>
+    <script src="/static/app.js?v=3"></script>
+</body>
+</html>
