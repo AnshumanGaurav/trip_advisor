@@ -795,6 +795,45 @@ function getArrivalDateTime(leg) {
     return new Date(depDt.getTime() + durationMins * 60 * 1000);
 }
 
+function mapDatasetIndex(sourceChart, targetChart, sourceDatasetIndex) {
+    if (sourceDatasetIndex === 2) return 2; // Your Selection is always datasetIndex 2
+    
+    const sourceIsCost = (sourceChart === costChart);
+    const targetIsCost = (targetChart === costChart);
+    
+    if (sourceIsCost !== targetIsCost) {
+        return sourceDatasetIndex === 0 ? 1 : 0;
+    }
+    return sourceDatasetIndex;
+}
+
+function handleChartHoverSync(event, activeElements, sourceChart) {
+    const charts = [costChart, transitChart, durationChart];
+    
+    if (activeElements && activeElements.length > 0) {
+        const index = activeElements[0].index;
+        const sourceDatasetIndex = activeElements[0].datasetIndex;
+        
+        charts.forEach(chart => {
+            if (!chart || chart === sourceChart) return;
+            
+            const targetDatasetIndex = mapDatasetIndex(sourceChart, chart, sourceDatasetIndex);
+            
+            chart.setActiveElements([{ datasetIndex: targetDatasetIndex, index: index }]);
+            chart.tooltip.setActiveElements([{ datasetIndex: targetDatasetIndex, index: index }]);
+            chart.update('none');
+        });
+    } else {
+        charts.forEach(chart => {
+            if (!chart || chart === sourceChart) return;
+            
+            chart.setActiveElements([]);
+            chart.tooltip.setActiveElements([]);
+            chart.update('none');
+        });
+    }
+}
+
 function formatDateString(dateStr) {
     const options = { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' };
     const dateObj = new Date(dateStr);
@@ -1680,6 +1719,9 @@ function renderChart(options, bestOption) {
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
+                onHover: (event, activeElements) => {
+                    handleChartHoverSync(event, activeElements, costChart);
+                },
                 plugins: {
                     legend: { 
                         display: true,
@@ -1772,18 +1814,18 @@ function renderChart(options, bestOption) {
                         {
                             label: 'Fastest (hrs)',
                             data: fastestActiveHours || customActiveHoursDataPoints,
-                            borderColor: '#06b6d4',
+                            borderColor: '#3b82f6',
                             borderWidth: 3,
                             backgroundColor: 'transparent',
                             fill: false,
                             tension: 0.35,
                             spanGaps: false,
-                            pointBackgroundColor: '#06b6d4',
-                            pointBorderColor: 'rgba(6, 182, 212, 0.4)',
+                            pointBackgroundColor: '#3b82f6',
+                            pointBorderColor: 'rgba(59, 130, 246, 0.4)',
                             pointBorderWidth: 2,
                             pointRadius: options.map(opt => opt.available ? 5 : 0),
                             pointHoverRadius: 7,
-                            pointHoverBackgroundColor: '#06b6d4',
+                            pointHoverBackgroundColor: '#3b82f6',
                             pointHoverBorderColor: '#ffffff',
                             pointHoverBorderWidth: 2
                         },
@@ -1826,6 +1868,9 @@ function renderChart(options, bestOption) {
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
+                    onHover: (event, activeElements) => {
+                        handleChartHoverSync(event, activeElements, transitChart);
+                    },
                     plugins: {
                         legend: {
                             display: true,
@@ -1887,18 +1932,18 @@ function renderChart(options, bestOption) {
                     {
                         label: 'Fastest (days)',
                         data: window.fastestItineraryDurations || durationDataPoints,
-                        borderColor: '#06b6d4',
+                        borderColor: '#3b82f6',
                         borderWidth: 3,
                         backgroundColor: 'transparent',
                         fill: false,
                         tension: 0.35,
                         spanGaps: false,
-                        pointBackgroundColor: '#06b6d4',
-                        pointBorderColor: 'rgba(6, 182, 212, 0.4)',
+                        pointBackgroundColor: '#3b82f6',
+                        pointBorderColor: 'rgba(59, 130, 246, 0.4)',
                         pointBorderWidth: 2,
                         pointRadius: options.map(opt => opt.available ? 5 : 0),
                         pointHoverRadius: 7,
-                        pointHoverBackgroundColor: '#06b6d4',
+                        pointHoverBackgroundColor: '#3b82f6',
                         pointHoverBorderColor: '#ffffff',
                         pointHoverBorderWidth: 2
                     },
@@ -1947,6 +1992,9 @@ function renderChart(options, bestOption) {
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
+                onHover: (event, activeElements) => {
+                    handleChartHoverSync(event, activeElements, durationChart);
+                },
                 plugins: {
                     legend: {
                         display: true,
