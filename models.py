@@ -5,12 +5,14 @@ class StopInput(BaseModel):
     city: str = Field(..., description="Name of the intermediate city")
     nights: int = Field(..., description="Number of nights to spend in this city", ge=0)
     transport: str = Field(..., description="Transport mode to reach this city (flight, train, bus)")
+    selected_class: Optional[str] = None
 
 class OptimizeRequest(BaseModel):
     source: str = Field(..., description="Starting city")
     stops: List[StopInput] = Field(default_factory=list, description="Intermediate stops in order")
     destination: str = Field(..., description="Final destination city")
     destination_transport: str = Field(..., description="Transport mode from last stop to destination")
+    destination_class: Optional[str] = None
     start_date: str = Field(..., description="Base start date (YYYY-MM-DD)")
     force_refresh: bool = Field(False, description="Whether to bypass the cached data")
 
@@ -30,15 +32,20 @@ class LegDetail(BaseModel):
     alternatives: List[Dict[str, Any]] = []
     data_source: str = "Dummy"
     cached_at: Optional[str] = None
+    selected_class: Optional[str] = None
 
 class ItineraryOption(BaseModel):
     start_date: str
     total_cost: int
     legs: List[LegDetail]
     available: bool
+    total_duration_hours: float = 0.0
+    total_duration_str: str = ""
 
 class OptimizeResponse(BaseModel):
     best_option: Optional[ItineraryOption] = None
     all_options: List[ItineraryOption]
     average_cost: float
     savings: float
+    flight_api_calls: int = 0
+    train_api_calls: int = 0

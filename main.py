@@ -8,6 +8,7 @@ import cities_db
 import os
 from pydantic import BaseModel
 from datetime import datetime
+from typing import Optional
 import flight_api
 
 app = FastAPI(
@@ -30,6 +31,8 @@ class RefreshLegRequest(BaseModel):
     to_city: str
     date: str
     mode: str
+    selected_class: Optional[str] = None
+    force_refresh: Optional[bool] = False
 
 @app.post("/api/optimize", response_model=OptimizeResponse)
 def optimize_travel_route(request: OptimizeRequest):
@@ -48,7 +51,8 @@ def api_refresh_leg(req: RefreshLegRequest):
             to_city=req.to_city,
             travel_date=travel_date,
             mode=req.mode,
-            force_refresh=True
+            force_refresh=req.force_refresh if req.force_refresh is not None else False,
+            selected_class=req.selected_class
         )
         return {
             "cost": details["cost"],
@@ -58,10 +62,20 @@ def api_refresh_leg(req: RefreshLegRequest):
             "cached_at": details["cached_at"],
             "duration": details["duration"],
             "etd": details["etd"],
-            "eta": details["eta"]
+            "eta": details["eta"],
+            "selected_class": details.get("selected_class"),
+            "flight_api_calls": flight_api.FLIGHT_API_CALLS,
+            "train_api_calls": flight_api.TRAIN_API_CALLS
         }
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
+
+@app.get("/api/stats")
+def get_api_stats():
+    return {
+        "flight_api_calls": flight_api.FLIGHT_API_CALLS,
+        "train_api_calls": flight_api.TRAIN_API_CALLS
+    }
 
 @app.get("/api/cities/search")
 def search_cities(q: str = Query("", min_length=0), limit: int = 10):
