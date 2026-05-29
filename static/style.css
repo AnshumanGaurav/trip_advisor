@@ -125,6 +125,7 @@ button, input, select, textarea {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    position: relative;
 }
 
 /* ==========================================
@@ -760,6 +761,7 @@ button, input, select, textarea {
 .savings-icon { background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.2); color: var(--color-success); }
 .cost-icon { background: rgba(99, 102, 241, 0.1); border: 1px solid rgba(99, 102, 241, 0.2); color: var(--accent-indigo); }
 .avg-icon { background: rgba(139, 92, 246, 0.1); border: 1px solid rgba(139, 92, 246, 0.2); color: var(--accent-purple); }
+.fastest-icon { background: rgba(6, 182, 212, 0.1); border: 1px solid rgba(6, 182, 212, 0.2); color: #06b6d4; }
 
 .stat-icon-wrapper i {
     width: 28px;
@@ -839,6 +841,41 @@ button, input, select, textarea {
 .legend-cheapest .dot { background: var(--color-success); }
 .legend-standard .dot { background: var(--accent-purple); }
 .legend-soldout .dot { background: var(--color-danger); }
+
+.charts-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-top: 16px;
+}
+
+.charts-container-3 {
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+@media (max-width: 1200px) {
+    .charts-container-3 {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 992px) {
+    .charts-container {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    .charts-container-3 {
+        grid-template-columns: 1fr;
+    }
+}
+
+.chart-box {
+    background: rgba(10, 8, 20, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    border-radius: var(--radius-md);
+    padding: 16px;
+    box-shadow: inset 0 0 15px rgba(255, 255, 255, 0.01);
+}
 
 .chart-wrapper {
     height: 320px;
@@ -998,6 +1035,7 @@ button, input, select, textarea {
 .ind-end { background: var(--color-danger); box-shadow: 0 0 10px var(--color-danger-glow); }
 
 .timeline-content {
+    position: relative;
     background: rgba(10, 8, 20, 0.4);
     border: 1px solid var(--panel-border);
     border-radius: var(--radius-md);
@@ -1254,3 +1292,332 @@ button, input, select, textarea {
     font-weight: 700;
     color: var(--text-primary);
 }
+
+/* ==========================================
+   IRCTC Train & Dynamic Class UI Elements
+   ========================================== */
+.train-class-select-container, .flight-class-select-container {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: auto;
+}
+
+.train-class-label, .flight-class-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.train-class-select, .flight-class-select {
+    padding: 6px 12px;
+    background: rgba(10, 8, 20, 0.7);
+    border: 1px solid rgba(139, 92, 246, 0.4);
+    border-radius: var(--radius-sm);
+    color: var(--text-primary);
+    font-size: 12px;
+    font-weight: 600;
+    outline: none;
+    cursor: pointer;
+    transition: var(--transition-fast);
+    box-shadow: 0 0 5px rgba(139, 92, 246, 0.1);
+}
+
+.train-class-select:focus, .flight-class-select:focus {
+    border-color: var(--accent-purple);
+    box-shadow: 0 0 10px var(--accent-purple-glow);
+}
+
+/* Availability Status Badges */
+.status-badge {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 20px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    text-transform: capitalize;
+}
+
+.status-badge-available {
+    background: rgba(16, 185, 129, 0.15);
+    color: var(--color-success);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.status-badge-waitlist {
+    background: rgba(245, 158, 11, 0.15);
+    color: #fbbf24;
+    border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.status-badge-unavailable {
+    background: rgba(244, 63, 94, 0.15);
+    color: var(--color-danger);
+    border: 1px solid rgba(244, 63, 94, 0.3);
+}
+
+/* Pantry & Rating Badges */
+.train-meta-details {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 8px;
+    font-size: 11px;
+    color: var(--text-secondary);
+}
+
+.train-rating {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: #fbbf24;
+    font-weight: 600;
+}
+
+.train-pantry {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.train-pantry.has-pantry {
+    color: var(--color-success);
+}
+
+/* Card Loader Overlay */
+.card-mini-loader {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(11, 8, 23, 0.85);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    z-index: 10;
+    border-radius: var(--radius-md);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--accent-purple);
+    box-shadow: inset 0 0 20px rgba(139, 92, 246, 0.1);
+    animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* ==========================================
+   Optimization Goal & User Preference UI
+   ========================================== */
+.optimization-preference-panel {
+    margin-bottom: 24px;
+    padding: 16px 24px;
+    border-radius: var(--radius-md);
+    background: rgba(15, 10, 30, 0.45);
+    border: 1px solid rgba(139, 92, 246, 0.15);
+    box-shadow: inset 0 0 20px rgba(139, 92, 246, 0.05);
+}
+
+.opt-preference-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 12px;
+}
+
+.opt-preference-header h4 {
+    margin: 0;
+    font-family: 'Outfit', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-primary);
+}
+
+/* Toggle Group for Preference */
+.toggle-group {
+    display: flex;
+    background: rgba(10, 8, 20, 0.8);
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    border-radius: 30px;
+    padding: 4px;
+    gap: 4px;
+}
+
+.toggle-btn {
+    background: transparent;
+    color: var(--text-secondary);
+    border: none;
+    padding: 6px 18px;
+    border-radius: 20px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-fast);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    outline: none;
+}
+
+.toggle-btn:hover {
+    color: var(--text-primary);
+}
+
+.toggle-btn.active {
+    background: var(--accent-purple);
+    color: #fff;
+    box-shadow: 0 0 10px var(--accent-purple-glow);
+}
+
+/* Trade-off Impact Banner */
+.tradeoff-banner {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 16px;
+    background: rgba(139, 92, 246, 0.08);
+    border-left: 4px solid var(--accent-purple);
+    border-radius: 4px;
+    font-size: 12px;
+    color: var(--text-primary);
+    transition: all 0.3s ease;
+}
+
+.tradeoff-banner.time-optimized {
+    background: rgba(6, 182, 212, 0.08);
+    border-left-color: #06b6d4;
+}
+
+.tradeoff-banner i {
+    width: 16px;
+    height: 16px;
+    color: var(--accent-purple);
+    flex-shrink: 0;
+}
+
+.tradeoff-banner.time-optimized i {
+    color: #06b6d4;
+}
+
+/* Preferred selection style */
+.btn-preferred-active {
+    background: var(--color-success) !important;
+    border-color: var(--color-success) !important;
+    color: #fff !important;
+    box-shadow: 0 0 10px var(--color-success-glow) !important;
+}
+
+/* Glowing green outline for selected preference card in strip */
+.date-card.preferred-choice {
+    border-color: var(--color-success) !important;
+    box-shadow: 0 0 12px rgba(16, 185, 129, 0.25) !important;
+}
+
+/* Glassmorphic lock button inside date cards */
+.date-card-lock-btn {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    z-index: 10;
+}
+.date-card-lock-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    color: var(--text-primary);
+    border-color: rgba(255, 255, 255, 0.25);
+    transform: scale(1.1);
+}
+.date-card-lock-btn.locked {
+    background: rgba(16, 185, 129, 0.2) !important;
+    border-color: var(--color-success) !important;
+    color: var(--color-success) !important;
+    box-shadow: 0 0 8px rgba(16, 185, 129, 0.35) !important;
+}
+.date-card-lock-btn.locked:hover {
+    background: rgba(16, 185, 129, 0.35) !important;
+    color: #fff !important;
+}
+
+/* Persistent API Calls Counter in Top-Right */
+.api-calls-counter {
+    position: fixed;
+    top: 20px;
+    right: 32px;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 14px;
+    background: rgba(30, 27, 75, 0.55);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-full, 50px);
+    box-shadow: var(--shadow-sm);
+    font-size: 11.5px;
+    color: var(--text-secondary);
+    transition: all 0.3s ease;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+}
+
+.api-calls-counter:hover {
+    background: rgba(30, 27, 75, 0.6);
+    border-color: rgba(139, 92, 246, 0.3);
+    box-shadow: 0 0 10px rgba(139, 92, 246, 0.15);
+}
+
+.api-counter-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.api-counter-item i {
+    width: 13px;
+    height: 13px;
+    color: var(--text-secondary);
+}
+
+.flight-counter i {
+    color: #60a5fa; /* light blue */
+}
+
+.train-counter i {
+    color: #f59e0b; /* amber */
+}
+
+.api-counter-item strong {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.api-counter-divider {
+    width: 1px;
+    height: 14px;
+    background: rgba(255, 255, 255, 0.12);
+}
+
