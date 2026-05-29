@@ -11,7 +11,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
     <!-- CSS Stylesheet -->
-    <link rel="stylesheet" href="/static/style.css?v=2">
+    <link rel="stylesheet" href="/static/style.css?v=3">
     
     <!-- Chart.js CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -109,13 +109,26 @@
                 
                 <!-- SUBMIT -->
                 <button type="submit" class="btn btn-primary btn-block" id="optimize-btn">
-                    <i data-lucide="sparkles"></i> Find Cheapest Dates
+                    <i data-lucide="sparkles"></i> Optimize My Voyage
                 </button>
             </form>
         </aside>
         
         <!-- MAIN DASHBOARD AREA -->
         <main class="dashboard-main">
+            
+            <!-- GLOBAL API CALLS COUNTER PILL -->
+            <div class="api-calls-counter glass-panel" id="global-api-counter">
+                <div class="api-counter-item flight-counter">
+                    <i data-lucide="plane"></i>
+                    <span>Flight API: <strong id="flight-api-count">0</strong></span>
+                </div>
+                <div class="api-counter-divider"></div>
+                <div class="api-counter-item train-counter">
+                    <i data-lucide="train"></i>
+                    <span>Train API: <strong id="train-api-count">0</strong></span>
+                </div>
+            </div>
             
             <!-- STATE 1: Empty/Welcome State -->
             <div id="welcome-state" class="state-panel active">
@@ -178,6 +191,30 @@
             <!-- STATE 3: Results Dashboard -->
             <div id="results-state" class="state-panel">
                 
+                <!-- OPTIMIZATION PREFERENCE PANEL -->
+                <div class="optimization-preference-panel glass-panel">
+                    <div class="opt-preference-header">
+                        <div>
+                            <h4>Optimization Preference</h4>
+                            <p class="subtitle" style="margin: 2px 0 0 0; font-size: 11.5px; color: var(--text-secondary);">Select your primary priority. The dashboard will dynamically update and calculate cost-time trade-offs.</p>
+                        </div>
+                        <div class="toggle-group">
+                            <button class="toggle-btn active" id="opt-cost-btn" onclick="setOptimizationGoal('cost')">
+                                <i data-lucide="credit-card" style="width: 12px; height: 12px; display: inline-block; vertical-align: middle; margin-right: 6px;"></i>Cheapest
+                            </button>
+                            <button class="toggle-btn" id="opt-time-btn" onclick="setOptimizationGoal('time')">
+                                <i data-lucide="clock" style="width: 12px; height: 12px; display: inline-block; vertical-align: middle; margin-right: 6px;"></i>Fastest
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- TRADE-OFF IMPACT BANNER -->
+                    <div id="tradeoff-banner" class="tradeoff-banner">
+                        <i data-lucide="info"></i>
+                        <span id="tradeoff-text">Currently optimizing for <strong>Cheapest</strong>. Showing the itinerary with the lowest financial impact.</span>
+                    </div>
+                </div>
+                
                 <!-- TOP STATS CARDS -->
                 <section class="stats-grid">
                     <!-- CHEAPEST DATE (HERO) -->
@@ -205,15 +242,15 @@
                         </div>
                     </div>
                     
-                    <!-- AVERAGE TRIP COST -->
+                    <!-- FASTEST TRIP COST -->
                     <div class="stat-card glass-panel">
-                        <div class="stat-icon-wrapper avg-icon">
-                            <i data-lucide="bar-chart-2"></i>
+                        <div class="stat-icon-wrapper fastest-icon">
+                            <i data-lucide="zap"></i>
                         </div>
                         <div class="stat-info">
-                            <p class="stat-label">Average Trip Cost</p>
-                            <h3 id="avg-cost-display">-</h3>
-                            <p class="stat-helper text-muted" id="options-count-display">From 30 options scanned</p>
+                            <p class="stat-label">Fastest Trip Cost</p>
+                            <h3 id="fastest-cost-display">-</h3>
+                            <p class="stat-helper text-cyan" id="fastest-duration-helper">-</p>
                         </div>
                     </div>
                 </section>
@@ -222,8 +259,8 @@
                 <section class="chart-section glass-panel">
                     <div class="chart-header">
                         <div>
-                            <h3>Cost Trend Dashboard</h3>
-                            <p class="subtitle">Total Trip Cost vs. Departure Date (Next 30 Days)</p>
+                            <h3>Trip Analytics Dashboard</h3>
+                            <p class="subtitle">Compare Cost, Active Transit Time & Elapsed Duration per Departure Date</p>
                         </div>
                         <div class="chart-legend">
                             <span class="legend-cheapest"><span class="dot"></span> Best Date</span>
@@ -232,13 +269,39 @@
                         </div>
                     </div>
                     
-                    <div class="chart-wrapper">
-                        <canvas id="cost-chart"></canvas>
+                    <div class="charts-container charts-container-3">
+                        <div class="chart-box">
+                            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                                <i data-lucide="credit-card" style="width: 14px; height: 14px; color: var(--accent-purple);"></i>
+                                <h4 class="chart-box-title" style="margin: 0; font-family: 'Outfit'; font-size: 13px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px;">Trip Cost (INR)</h4>
+                            </div>
+                            <div class="chart-wrapper">
+                                <canvas id="cost-chart"></canvas>
+                            </div>
+                        </div>
+                        <div class="chart-box">
+                            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                                <i data-lucide="zap" style="width: 14px; height: 14px; color: #3b82f6;"></i>
+                                <h4 class="chart-box-title" style="margin: 0; font-family: 'Outfit'; font-size: 13px; font-weight: 600; color: #3b82f6; text-transform: uppercase; letter-spacing: 0.5px;">Active Transit Time (Hours)</h4>
+                            </div>
+                            <div class="chart-wrapper">
+                                <canvas id="transit-chart"></canvas>
+                            </div>
+                        </div>
+                        <div class="chart-box">
+                            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                                <i data-lucide="clock" style="width: 14px; height: 14px; color: #06b6d4;"></i>
+                                <h4 class="chart-box-title" style="margin: 0; font-family: 'Outfit'; font-size: 13px; font-weight: 600; color: #06b6d4; text-transform: uppercase; letter-spacing: 0.5px;">Total Trip Duration (Days)</h4>
+                            </div>
+                            <div class="chart-wrapper">
+                                <canvas id="duration-chart"></canvas>
+                            </div>
+                        </div>
                     </div>
                     
                     <div class="chart-footer-hint">
                         <i data-lucide="info"></i>
-                        <span><strong>Interactive Chart:</strong> Click on any node on the line chart above to preview the itinerary breakdown for that departure date.</span>
+                        <span><strong>Synchronized Curve Comparison:</strong> Observe how switching classes affects both your budget and vacation time. Click on any node to preview the timeline for that date.</span>
                     </div>
                 </section>
                 
@@ -247,9 +310,14 @@
                     
                     <!-- LEFT COLUMN: Timeline -->
                     <div class="timeline-column glass-panel">
-                        <div class="panel-header">
-                            <h3>Itinerary Timeline</h3>
-                            <p class="subtitle" id="timeline-subtitle">Detailed breakdown for trip starting on -</p>
+                        <div class="panel-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 16px;">
+                            <div>
+                                <h3>Itinerary Timeline</h3>
+                                <p class="subtitle" id="timeline-subtitle">Detailed breakdown for trip starting on -</p>
+                            </div>
+                            <button id="select-preferred-btn" class="btn btn-secondary btn-sm" style="font-family: 'Outfit'; font-size: 11px; font-weight: 600; padding: 6px 14px; border-radius: 20px; display: flex; align-items: center; gap: 6px; cursor: pointer; transition: all 0.2s;" onclick="selectPreferredItinerary()">
+                                <i data-lucide="check" style="width: 12px; height: 12px;"></i>Select as Preference
+                            </button>
                         </div>
                         
                         <!-- Interactive Date Selector Strip -->
@@ -269,6 +337,14 @@
                         
                         <div class="journey-stats-card">
                             <div class="journey-summary-row">
+                                <span class="label"><i data-lucide="plane-takeoff" style="width:12px;height:12px;vertical-align:middle;margin-right:5px;"></i>Departs:</span>
+                                <span id="summary-departs-val" class="value" style="color: var(--accent-purple); font-weight: 700;">-</span>
+                            </div>
+                            <div class="journey-summary-row">
+                                <span class="label"><i data-lucide="plane-landing" style="width:12px;height:12px;vertical-align:middle;margin-right:5px;"></i>Arrives:</span>
+                                <span id="summary-arrives-val" class="value" style="color: #10b981; font-weight: 700;">-</span>
+                            </div>
+                            <div class="journey-summary-row" style="border-top: 1px solid rgba(255,255,255,0.05); margin-top: 6px; padding-top: 10px;">
                                 <span class="label">Total Stops:</span>
                                 <span id="summary-stops-val" class="value">-</span>
                             </div>
@@ -277,8 +353,12 @@
                                 <span id="summary-nights-val" class="value">-</span>
                             </div>
                             <div class="journey-summary-row">
-                                <span class="label">Total Distance:</span>
-                                <span id="summary-distance-val" class="value">-</span>
+                                <span class="label">Trip Duration (Elapsed):</span>
+                                <span id="summary-duration-val" class="value">-</span>
+                            </div>
+                            <div class="journey-summary-row">
+                                <span class="label">Active Travel Time:</span>
+                                <span id="summary-active-time-val" class="value" style="color: var(--accent-cyan); font-weight: 700;">-</span>
                             </div>
                         </div>
                         
@@ -303,6 +383,6 @@
     <script>
         lucide.createIcons();
     </script>
-    <script src="/static/app.js?v=3"></script>
+    <script src="/static/app.js?v=9"></script>
 </body>
 </html>
