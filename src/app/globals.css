@@ -23,8 +23,8 @@
     --color-danger: #f43f5e;
     --color-danger-glow: rgba(244, 63, 94, 0.2);
     
-    --font-heading: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    --font-body: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --font-heading: var(--font-heading), 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --font-body: var(--font-body), 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-fast: all 0.15s ease;
@@ -241,7 +241,10 @@ button, input, select, textarea {
 
 .autocomplete-dropdown {
     display: none;
-    position: fixed;          /* fixed so it escapes sidebar overflow-y:auto */
+    position: absolute;          
+    top: calc(100% + 4px);
+    left: 0;
+    width: 100%;
     z-index: 9999;
     background: rgba(14, 10, 28, 0.98);
     border: 1px solid rgba(139, 92, 246, 0.3);
@@ -1112,6 +1115,7 @@ button, input, select, textarea {
         position: relative;
         border-right: none;
         border-bottom: 1px solid var(--panel-border);
+        padding: 24px 16px;
     }
     
     .dashboard-main {
@@ -1575,8 +1579,8 @@ button, input, select, textarea {
     padding: 8px 14px;
     background: rgba(30, 27, 75, 0.55);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: var(--radius-full, 50px);
-    box-shadow: var(--shadow-sm);
+    border-radius: 50px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     font-size: 11.5px;
     color: var(--text-secondary);
     transition: all 0.3s ease;
@@ -1599,25 +1603,51 @@ button, input, select, textarea {
 .api-counter-item i {
     width: 13px;
     height: 13px;
-    color: var(--text-secondary);
 }
 
-.flight-counter i {
-    color: #60a5fa; /* light blue */
-}
-
-.train-counter i {
-    color: #f59e0b; /* amber */
-}
-
-.api-counter-item strong {
-    color: var(--text-primary);
-    font-weight: 600;
-}
+.flight-counter i { color: #60a5fa; }
+.train-counter i { color: #a78bfa; }
 
 .api-counter-divider {
     width: 1px;
-    height: 14px;
-    background: rgba(255, 255, 255, 0.12);
+    height: 12px;
+    background: rgba(255, 255, 255, 0.15);
 }
 
+.leg-lock-btn {
+    padding: 6px 12px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 11px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.03);
+    color: var(--text-secondary);
+    transition: all 0.2s ease;
+}
+.leg-lock-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-primary);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.leg-lock-btn.locked {
+    background: rgba(16, 185, 129, 0.15) !important;
+    border-color: var(--color-success) !important;
+    color: var(--color-success) !important;
+}
+
+.leg-lock-btn.locked:hover {
+    background: rgba(16, 185, 129, 0.25) !important;
+}
+
+/* React specific input overrides */
+input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+    cursor: pointer;
+    opacity: 0.7;
+    transition: var(--transition-fast);
+}
+input[type="date"]::-webkit-calendar-picker-indicator:hover {
+    opacity: 1;
+}

@@ -218,7 +218,7 @@ class FlightTransportProvider(TransportProvider):
         try:
             global FLIGHT_API_CALLS
             FLIGHT_API_CALLS += 1
-            res = requests.get(url, headers=headers, params=querystring, timeout=15)
+            res = requests.get(url, headers=headers, params=querystring, timeout=8.0)
             res.raise_for_status()
             data = res.json()
             
@@ -303,10 +303,14 @@ class FlightTransportProvider(TransportProvider):
                         True, flight_name, alternatives, "Fresh", cached_time,
                         cabin_class
                     )
+            else:
+                # Genuinely no flights found for this query in the API response
+                return self._build_unavailable_payload(from_city, from_code, to_city, to_code, date_str, "flight", cabin_class)
         except Exception as e:
-            logger.error(f"Failed to fetch real flight for {cache_key}: {e}")
+            error_msg = f"Flight API request failed for {from_city} -> {to_city} on {date_str}. Reason: {str(e)}. Please check your internet connection or RapidAPI key and try again."
+            logger.error(error_msg)
+            raise RuntimeError(error_msg)
 
-        return self._build_unavailable_payload(from_city, from_code, to_city, to_code, date_str, "flight", cabin_class)
 
     def _build_payload(self, from_c, from_code, to_c, to_code, date_s, mode, cost, dur, etd, eta, avail, name, alts, src, cached, selected_class=None):
         return {
@@ -329,6 +333,7 @@ class FlightTransportProvider(TransportProvider):
             "alternatives": [], "data_source": "None", "cached_at": "",
             "selected_class": selected_class
         }
+
 
 
 class TrainTransportProvider(TransportProvider):
@@ -431,20 +436,15 @@ class TrainTransportProvider(TransportProvider):
                 else:
                     logger.warning(f"IRCTC API returned unsuccessful status for {cache_key}: {res_json}")
             except Exception as e:
-                logger.error(f"Failed to fetch live IRCTC data for {cache_key}: {e}")
+                error_msg = f"Train API request failed for {from_city} ({src_code}) -> {to_city} ({dst_code}) on {date_query_str}. Reason: {str(e)}. Please check your internet connection or RapidAPI key and try again."
+                logger.error(error_msg)
+                raise RuntimeError(error_msg)
 
-        # 3. Fallback to mock data if live API fails and cache is empty
+        # 3. Fallback to mock data if live API fails and cache is empty (NO FALLBACK ALLOWED per user guidelines!)
         if train_data is None:
-            logger.info("Falling back to local static train database for mock response...")
-            mock_res = self._get_fallback_data()
-            train_data = mock_res.get("data", [])
-            cached_at = datetime.now().isoformat()
-            is_cached = True  # Treat fallback as cached to maintain UX consistency
-            
-            # Map station names/codes inside fallback data to match the user's actual query
-            for t in train_data:
-                t["from"] = {"code": src_code, "name": from_city}
-                t["to"] = {"code": dst_code, "name": to_city}
+            error_msg = f"Train API request failed for {from_city} ({src_code}) -> {to_city} ({dst_code}) on {date_query_str}. Reason: Unsuccessful API status returned. Please check your RapidAPI key and try again."
+            logger.error(error_msg)
+            raise RuntimeError(error_msg)
 
         # 4. Parse the train availability data
         if not train_data:
@@ -464,8 +464,8 @@ class TrainTransportProvider(TransportProvider):
             for ca in t.get("classAvailability", []):
                 class_availabilities.append({
                     "class": ca.get("class"),
-                    "availability": ca.get("availability"),
-                    "fare": float(ca.get("fare", 0)),
+                    "availability": ca.get("availability") or "",
+                    "fare": float(ca.get("fare") or 0),
                     "prediction": ca.get("prediction"),
                     "displayStatus": ca.get("displayStatus"),
                     "predictionPercent": ca.get("predictionPercent"),

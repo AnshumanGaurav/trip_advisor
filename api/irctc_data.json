@@ -1,0 +1,1155 @@
+{
+  "success": true,
+  "data": [
+    {
+      "trainNumber": "04829",
+      "trainName": "JU GKP SPL",
+      "from": {
+        "code": "DEC",
+        "name": "Delhi Cantt"
+      },
+      "to": {
+        "code": "GKP",
+        "name": "Gorakhpur Junction"
+      },
+      "departure": "03:45",
+      "arrival": "20:50",
+      "duration": "17h 5m",
+      "distanceKm": 799,
+      "pantry": "No",
+      "rating": 3.4,
+      "runningDays": "Thu",
+      "allClasses": [
+        "SL",
+        "3A",
+        "2A"
+      ],
+      "classAvailability": [
+        {
+          "class": "SL",
+          "availability": "NOT AVAILABLE",
+          "fare": "535",
+          "prediction": "",
+          "displayStatus": "Not Available",
+          "predictionPercent": 0,
+          "quota": "GN"
+        },
+        {
+          "class": "3A",
+          "availability": "NOT AVAILABLE",
+          "fare": "1450",
+          "prediction": "",
+          "displayStatus": "Not Available",
+          "predictionPercent": 0,
+          "quota": "GN"
+        },
+        {
+          "class": "2A",
+          "availability": "CURR_AVBL-0031",
+          "fare": "2030",
+          "prediction": "Available",
+          "displayStatus": "CURR_AVL 31",
+          "predictionPercent": 100,
+          "quota": "GN"
+        }
+      ]
+    },
+    {
+      "trainNumber": "05302",
+      "trainName": "MAU SUMMER SPL",
+      "from": {
+        "code": "DLI",
+        "name": "Old Delhi"
+      },
+      "to": {
+        "code": "GKP",
+        "name": "Gorakhpur Junction"
+      },
+      "departure": "05:10",
+      "arrival": "18:50",
+      "duration": "13h 40m",
+      "distanceKm": 725,
+      "pantry": "No",
+      "rating": 3.1,
+      "runningDays": "Thu",
+      "allClasses": [
+        "SL",
+        "3E",
+        "3A",
+        "2A",
+        "1A"
+      ],
+      "classAvailability": [
+        {
+          "class": "1A",
+          "availability": "CURR_AVBL-0005",
+          "fare": "2960",
+          "prediction": "Available",
+          "displayStatus": "CURR_AVL 5",
+          "predictionPercent": 100,
+          "quota": "GN"
+        },
+        {
+          "class": "SL",
+          "availability": "GNWL106/WL21",
+          "fare": "505",
+          "prediction": "45% Chance",
+          "displayStatus": "WL 21",
+          "predictionPercent": 45,
+          "quota": "GN"
+        },
+        {
+          "class": "3E",
+          "availability": "CURR_AVBL-0016",
+          "fare": "1260",
+          "prediction": "Available",
+          "displayStatus": "CURR_AVL 16",
+          "predictionPercent": 100,
+          "quota": "GN"
+        },
+        {
+          "class": "3A",
+          "availability": "CURR_AVBL-0068",
+          "fare": "1365",
+          "prediction": "Available",
+          "displayStatus": "CURR_AVL 68",
+          "predictionPercent": 100,
+          "quota": "GN"
+        },
+        {
+          "class": "2A",
+          "availability": "AVAILABLE-0072",
+          "fare": "1935",
+          "prediction": "Available",
+          "displayStatus": "AVL 72",
+          "predictionPercent": 100,
+          "quota": "GN"
+        }
+      ]
+    },
+    {
+      "trainNumber": "05578",
+      "trainName": "ANVT SHC GR SPL",
+      "from": {
+        "code": "ANVT",
+        "name": "Delhi Anand Vihar Terminus"
+      },
+      "to": {
+        "code": "GKP",
+        "name": "Gorakhpur Junction"
+      },
+      "departure": "05:15",
+      "arrival": "19:30",
+      "duration": "14h 15m",
+      "distanceKm": 718,
+      "pantry": "No",
+      "rating": 2.9,
+      "runningDays": "Mon, Tue, Wed, Thu, Sat",
+      "allClasses": [
+        "3A"
+      ],
+      "classAvailability": [
+        {
+          "class": "3A",
+          "availability": "GNWL177/WL16",
+          "fare": "1050",
+          "prediction": "54% Chance",
+          "displayStatus": "WL 16",
+          "predictionPercent": 54,
+          "quota": "GN"
+        }
+      ]
+    },
+    {
+      "trainNumber": "15910",
+      "trainName": "AVADH ASSAM EXP",
+      "from": {
+        "code": "DLI",
+        "name": "Old Delhi"
+      },
+      "to": {
+        "code": "GKP",
+        "name": "Gorakhpur Junction"
+      },
+      "departure": "07:22",
+      "arrival": "23:40",
+      "duration": "16h 18m",
+      "distanceKm": 757,
+      "pantry": "Yes",
+      "rating": 3.6,
+      "runningDays": "Sun, Mon, Tue, Wed, Thu, Fri, Sat",
+      "allClasses": [
+        "SL",
+        "3A",
+        "2A",
+        "1A"
+      ],
+      "classAvailability": [
+        {
+          "class": "1A",
+          "availability": "NOT AVAILABLE",
+          "fare": "2615",
+          "prediction": "",
+          "displayStatus": "Not Available",
+          "predictionPercent": 0,
+          "quota": "GN"
+        },
+        {
+          "class": "SL",
+          "availability": "RLWL192/WL160",
+          "fare": "400",
+          "prediction": "32% Chance",
+          "displayStatus": "WL 160",
+          "predictionPercent": 32,
+          "quota": "GN"
+        },
+        {
+          "class": "3A",
+          "availability": "RLWL121/WL79",
+          "fare": "1090",
+          "prediction": "36% Chance",
+          "displayStatus": "WL 79",
+          "predictionPercent": 36,
+          "quota": "GN"
+        },
+        {
+          "class": "2A",
+          "availability": "NOT AVAILABLE",
+          "fare": "1560",
+          "prediction": "",
+          "displayStatus": "Not Available",
+          "predictionPercent": 0,
+          "quota": "GN"
+        }
+      ]
+    },
+    {
+      "trainNumber": "02570",
+      "trainName": "NDLS DBG SF SPL",
+      "from": {
+        "code": "NDLS",
+        "name": "New Delhi"
+      },
+      "to": {
+        "code": "GKP",
+        "name": "Gorakhpur Junction"
+      },
+      "departure": "12:15",
+      "arrival": "00:45",
+      "duration": "12h 30m",
+      "distanceKm": 786,
+      "pantry": "Yes",
+      "rating": 3.7,
+      "runningDays": "Sun, Mon, Tue, Wed, Thu, Fri, Sat",
+      "allClasses": [
+        "SL",
+        "3E",
+        "3A"
+      ],
+      "classAvailability": [
+        {
+          "class": "SL",
+          "availability": "PQWL32/WL29",
+          "fare": "560",
+          "prediction": "51% Chance",
+          "displayStatus": "WL 29",
+          "predictionPercent": 51,
+          "quota": "GN"
+        },
+        {
+          "class": "3A",
+          "availability": "PQWL18/WL11",
+          "fare": "1485",
+          "prediction": "64% Chance",
+          "displayStatus": "WL 11",
+          "predictionPercent": 64,
+          "quota": "GN"
+        },
+        {
+          "class": "3E",
+          "availability": "PQWL9/WL9",
+          "fare": "1375",
+          "prediction": "60% Chance",
+          "displayStatus": "WL 9",
+          "predictionPercent": 60,
+          "quota": "GN"
+        }
+      ]
+    },
+    {
+      "trainNumber": "12566",
+      "trainName": "BIHAR S KRANTI",
+      "from": {
+        "code": "NDLS",
+        "name": "New Delhi"
+      },
+      "to": {
+        "code": "GKP",
+        "name": "Gorakhpur Junction"
+      },
+      "departure": "12:45",
+      "arrival": "00:50",
+      "duration": "12h 5m",
+      "distanceKm": 789,
+      "pantry": "Yes",
+      "rating": 3.8,
+      "runningDays": "Sun, Mon, Tue, Wed, Thu, Fri, Sat",
+      "allClasses": [
+        "SL",
+        "3E",
+        "3A",
+        "2A",
+        "1A"
+      ],
+      "classAvailability": [
+        {
+          "class": "1A",
+          "availability": "PQWL3/WL3",
+          "fare": "2760",
+          "prediction": "63% Chance",
+          "displayStatus": "WL 3",
+          "predictionPercent": 63,
+          "quota": "GN"
+        },
+        {
+          "class": "SL",
+          "availability": "PQWL78/WL46",
+          "fare": "445",
+          "prediction": "38% Chance",
+          "displayStatus": "WL 46",
+          "predictionPercent": 38,
+          "quota": "GN"
+        },
+        {
+          "class": "3E",
+          "availability": "PQWL21/WL10",
+          "fare": "1080",
+          "prediction": "44% Chance",
+          "displayStatus": "WL 10",
+          "predictionPercent": 44,
+          "quota": "GN"
+        },
+        {
+          "class": "3A",
+          "availability": "PQWL35/WL22",
+          "fare": "1165",
+          "prediction": "49% Chance",
+          "displayStatus": "WL 22",
+          "predictionPercent": 49,
+          "quota": "GN"
+        },
+        {
+          "class": "2A",
+          "availability": "PQWL19/WL7",
+          "fare": "1645",
+          "prediction": "51% Chance",
+          "displayStatus": "WL 7",
+          "predictionPercent": 51,
+          "quota": "GN"
+        }
+      ]
+    },
+    {
+      "trainNumber": "04022",
+      "trainName": "GKP SUMMER SPL",
+      "from": {
+        "code": "NDLS",
+        "name": "New Delhi"
+      },
+      "to": {
+        "code": "GKP",
+        "name": "Gorakhpur Junction"
+      },
+      "departure": "14:00",
+      "arrival": "05:00",
+      "duration": "15h 0m",
+      "distanceKm": 760,
+      "pantry": "No",
+      "rating": 3.6,
+      "runningDays": "Thu",
+      "allClasses": [
+        "SL",
+        "3A",
+        "2A",
+        "1A"
+      ],
+      "classAvailability": [
+        {
+          "class": "1A",
+          "availability": "AVAILABLE-0008",
+          "fare": "3060",
+          "prediction": "Available",
+          "displayStatus": "AVL 8",
+          "predictionPercent": 100,
+          "quota": "GN"
+        },
+        {
+          "class": "SL",
+          "availability": "GNWL96/WL24",
+          "fare": "520",
+          "prediction": "57% Chance",
+          "displayStatus": "WL 24",
+          "predictionPercent": 57,
+          "quota": "GN"
+        },
+        {
+          "class": "3A",
+          "availability": "GNWL22/WL3",
+          "fare": "1420",
+          "prediction": "78% Chance",
+          "displayStatus": "WL 3",
+          "predictionPercent": 78,
+          "quota": "GN"
+        },
+        {
+          "class": "2A",
+          "availability": "RAC   8/RAC   8",
+          "fare": "1995",
+          "prediction": "Available",
+          "displayStatus": "RAC 8",
+          "predictionPercent": 100,
+          "quota": "GN"
+        }
+      ]
+    },
+    {
+      "trainNumber": "05058",
+      "trainName": "DLI GKP SPL",
+      "from": {
+        "code": "DLI",
+        "name": "Old Delhi"
+      },
+      "to": {
+        "code": "GKP",
+        "name": "Gorakhpur Junction"
+      },
+      "departure": "14:00",
+      "arrival": "06:25",
+      "duration": "16h 25m",
+      "distanceKm": 725,
+      "pantry": "No",
+      "rating": 3.6,
+      "runningDays": "Thu",
+      "allClasses": [
+        "SL",
+        "3E"
+      ],
+      "classAvailability": [
+        {
+          "class": "SL",
+          "availability": "TRAIN CANCELLED",
+          "fare": "505",
+          "prediction": "",
+          "displayStatus": "Train Cancelled",
+          "predictionPercent": 0,
+          "quota": "GN"
+        },
+        {
+          "class": "3E",
+          "availability": "TRAIN CANCELLED",
+          "fare": "1260",
+          "prediction": "",
+          "displayStatus": "Train Cancelled",
+          "predictionPercent": 0,
+          "quota": "GN"
+        }
+      ]
+    },
+    {
+      "trainNumber": "12558",
+      "trainName": "SAPT KRANTI EXP",
+      "from": {
+        "code": "ANVT",
+        "name": "Delhi Anand Vihar Terminus"
+      },
+      "to": {
+        "code": "GKP",
+        "name": "Gorakhpur Junction"
+      },
+      "departure": "14:35",
+      "arrival": "03:40",
+      "duration": "13h 5m",
+      "distanceKm": 749,
+      "pantry": "Yes",
+      "rating": 3.7,
+      "runningDays": "Sun, Mon, Tue, Wed, Thu, Fri, Sat",
+      "allClasses": [
+        "SL",
+        "3E",
+        "3A",
+        "2A",
+        "1A"
+      ],
+      "classAvailability": [
+        {
+          "class": "1A",
+          "availability": "PQWL17/WL10",
+          "fare": "2675",
+          "prediction": "46% Chance",
+          "displayStatus": "WL 10",
+          "predictionPercent": 46,
+          "quota": "GN"
+        },
+        {
+          "class": "SL",
+          "availability": "PQWL129/WL79",
+          "fare": "430",
+          "prediction": "38% Chance",
+          "displayStatus": "WL 79",
+          "predictionPercent": 38,
+          "quota": "GN"
+        },
+        {
+          "class": "3E",
+          "availability": "PQWL33/WL22",
+          "fare": "1045",
+          "prediction": "41% Chance",
+          "displayStatus": "WL 22",
+          "predictionPercent": 41,
+          "quota": "GN"
+        },
+        {
+          "class": "3A",
+          "availability": "PQWL69/WL37",
+          "fare": "1130",
+          "prediction": "43% Chance",
+          "displayStatus": "WL 37",
+          "predictionPercent": 43,
+          "quota": "GN"
+        },
+        {
+          "class": "2A",
+          "availability": "PQWL36/WL16",
+          "fare": "1595",
+          "prediction": "45% Chance",
+          "displayStatus": "WL 16",
+          "predictionPercent": 45,
+          "quota": "GN"
+        }
+      ]
+    },
+    {
+      "trainNumber": "15558",
+      "trainName": "AMRIT BHARAT EXP",
+      "from": {
+        "code": "ANVT",
+        "name": "Delhi Anand Vihar Terminus"
+      },
+      "to": {
+        "code": "GKP",
+        "name": "Gorakhpur Junction"
+      },
+      "departure": "15:10",
+      "arrival": "04:20",
+      "duration": "13h 10m",
+      "distanceKm": 800,
+      "pantry": "No",
+      "rating": 4.2,
+      "runningDays": "Mon, Thu",
+      "allClasses": [
+        "SL"
+      ],
+      "classAvailability": [
+        {
+          "class": "SL",
+          "availability": "PQWL113/WL72",
+          "fare": "480",
+          "prediction": "40% Chance",
+          "displayStatus": "WL 72",
+          "predictionPercent": 40,
+          "quota": "GN"
+        }
+      ]
+    },
+    {
+      "trainNumber": "15708",
+      "trainName": "ASR KIR EXPRESS",
+      "from": {
+        "code": "SZM",
+        "name": "Delhi Sabzi Mandi"
+      },
+      "to": {
+        "code": "GKP",
+        "name": "Gorakhpur Junction"
+      },
+      "departure": "16:32",
+      "arrival": "08:15",
+      "duration": "15h 43m",
+      "distanceKm": 786,
+      "pantry": "No",
+      "rating": 3.6,
+      "runningDays": "Sun, Mon, Tue, Wed, Thu, Fri, Sat",
+      "allClasses": [
+        "SL",
+        "3E",
+        "3A",
+        "2A"
+      ],
+      "classAvailability": [
+        {
+          "class": "SL",
+          "availability": "REGRET",
+          "fare": "415",
+          "prediction": "No more booking",
+          "displayStatus": "Regret",
+          "predictionPercent": 0,
+          "quota": "GN"
+        },
+        {
+          "class": "3E",
+          "availability": "REGRET",
+          "fare": "1030",
+          "prediction": "No more booking",
+          "displayStatus": "Regret",
+          "predictionPercent": 0,
+          "quota": "GN"
+        },
+        {
+          "class": "3A",
+          "availability": "RLWL14/WL5",
+          "fare": "1120",
+          "prediction": "60% Chance",
+          "displayStatus": "WL 5",
+          "predictionPercent": 60,
+          "quota": "GN"
+        },
+        {
+          "class": "2A",
+          "availability": "RLWL12/WL5",
+          "fare": "1600",
+          "prediction": "48% Chance",
+          "displayStatus": "WL 5",
+          "predictionPercent": 48,
+          "quota": "GN"
+        }
+      ]
+    },
+    {
+      "trainNumber": "15706",
+      "trainName": "CHAMPARAN HMSFR",
+      "from": {
+        "code": "DLI",
+        "name": "Old Delhi"
+      },
+      "to": {
+        "code": "GKP",
+        "name": "Gorakhpur Junction"
+      },
+      "departure": "16:35",
+      "arrival": "06:20",
+      "duration": "13h 45m",
+      "distanceKm": 846,
+      "pantry": "Yes",
+      "rating": 3.5,
+      "runningDays": "Mon, Thu",
+      "allClasses": [
+        "2S",
+        "SL",
+        "3A"
+      ],
+      "classAvailability": [
+        {
+          "class": "2S",
+          "availability": "GNWL48/WL32",
+          "fare": "295",
+          "prediction": "42% Chance",
+          "displayStatus": "WL 32",
+          "predictionPercent": 42,
+          "quota": "GN"
+        },
+        {
+          "class": "SL",
+          "availability": "GNWL286/WL109",
+          "fare": "495",
+          "prediction": "43% Chance",
+          "displayStatus": "WL 109",
+          "predictionPercent": 43,
+          "quota": "GN"
+        },
+        {
+          "class": "3A",
+          "availability": "GNWL173/WL48",
+          "fare": "1340",
+          "prediction": "55% Chance",
+          "displayStatus": "WL 48",
+          "predictionPercent": 55,
+          "quota": "GN"
+        }
+      ]
+    },
+    {
+      "trainNumber": "15280",
+      "trainName": "POORABIYA EXP",
+      "from": {
+        "code": "ANVT",
+        "name": "Delhi Anand Vihar Terminus"
+      },
+      "to": {
+        "code": "GKP",
+        "name": "Gorakhpur Junction"
+      },
+      "departure": "17:10",
+      "arrival": "07:55",
+      "duration": "14h 45m",
+      "distanceKm": 749,
+      "pantry": "Yes",
+      "rating": 3.5,
+      "runningDays": "Sun, Thu",
+      "allClasses": [
+        "SL",
+        "3E",
+        "3A",
+        "2A",
+        "1A"
+      ],
+      "classAvailability": [
+        {
+          "class": "1A",
+          "availability": "GNWL10/WL5",
+          "fare": "2595",
+          "prediction": "64% Chance",
+          "displayStatus": "WL 5",
+          "predictionPercent": 64,
+          "quota": "GN"
+        },
+        {
+          "class": "SL",
+          "availability": "GNWL191/WL99",
+          "fare": "400",
+          "prediction": "39% Chance",
+          "displayStatus": "WL 99",
+          "predictionPercent": 39,
+          "quota": "GN"
+        },
+        {
+          "class": "3E",
+          "availability": "GNWL50/WL28",
+          "fare": "1000",
+          "prediction": "42% Chance",
+          "displayStatus": "WL 28",
+          "predictionPercent": 42,
+          "quota": "GN"
+        },
+        {
+          "class": "3A",
+          "availability": "GNWL121/WL44",
+          "fare": "1085",
+          "prediction": "50% Chance",
+          "displayStatus": "WL 44",
+          "predictionPercent": 50,
+          "quota": "GN"
+        },
+        {
+          "class": "2A",
+          "availability": "GNWL44/WL16",
+          "fare": "1545",
+          "prediction": "45% Chance",
+          "displayStatus": "WL 16",
+          "predictionPercent": 45,
+          "quota": "GN"
+        }
+      ]
+    },
+    {
+      "trainNumber": "15274",
+      "trainName": "SATYAGRAH EXP",
+      "from": {
+        "code": "ANVT",
+        "name": "Delhi Anand Vihar Terminus"
+      },
+      "to": {
+        "code": "GKP",
+        "name": "Gorakhpur Junction"
+      },
+      "departure": "17:30",
+      "arrival": "10:20",
+      "duration": "16h 50m",
+      "distanceKm": 718,
+      "pantry": "No",
+      "rating": 3.6,
+      "runningDays": "Sun, Mon, Tue, Wed, Thu, Fri, Sat",
+      "allClasses": [
+        "SL",
+        "3A",
+        "2A",
+        "1A"
+      ],
+      "classAvailability": [
+        {
+          "class": "1A",
+          "availability": "GNWL11/WL5",
+          "fare": "2515",
+          "prediction": "56% Chance",
+          "displayStatus": "WL 5",
+          "predictionPercent": 56,
+          "quota": "GN"
+        },
+        {
+          "class": "SL",
+          "availability": "GNWL187/WL70",
+          "fare": "390",
+          "prediction": "37% Chance",
+          "displayStatus": "WL 70",
+          "predictionPercent": 37,
+          "quota": "GN"
+        },
+        {
+          "class": "3A",
+          "availability": "GNWL116/WL35",
+          "fare": "1050",
+          "prediction": "43% Chance",
+          "displayStatus": "WL 35",
+          "predictionPercent": 43,
+          "quota": "GN"
+        },
+        {
+          "class": "2A",
+          "availability": "GNWL44/WL19",
+          "fare": "1505",
+          "prediction": "60% Chance",
+          "displayStatus": "WL 19",
+          "predictionPercent": 60,
+          "quota": "GN"
+        }
+      ]
+    },
+    {
+      "trainNumber": "02564",
+      "trainName": "NDLS BJU SPL",
+      "from": {
+        "code": "NDLS",
+        "name": "New Delhi"
+      },
+      "to": {
+        "code": "GKP",
+        "name": "Gorakhpur Junction"
+      },
+      "departure": "17:55",
+      "arrival": "06:35",
+      "duration": "12h 40m",
+      "distanceKm": 786,
+      "pantry": "No",
+      "rating": 3.7,
+      "runningDays": "Sun, Mon, Tue, Wed, Thu, Fri, Sat",
+      "allClasses": [
+        "SL",
+        "3E",
+        "3A"
+      ],
+      "classAvailability": [
+        {
+          "class": "SL",
+          "availability": "GNWL134/WL49",
+          "fare": "530",
+          "prediction": "46% Chance",
+          "displayStatus": "WL 49",
+          "predictionPercent": 46,
+          "quota": "GN"
+        },
+        {
+          "class": "3A",
+          "availability": "GNWL86/WL30",
+          "fare": "1440",
+          "prediction": "59% Chance",
+          "displayStatus": "WL 30",
+          "predictionPercent": 59,
+          "quota": "GN"
+        },
+        {
+          "class": "3E",
+          "availability": "GNWL81/WL18",
+          "fare": "1325",
+          "prediction": "57% Chance",
+          "displayStatus": "WL 18",
+          "predictionPercent": 57,
+          "quota": "GN"
+        }
+      ]
+    },
+    {
+      "trainNumber": "19269",
+      "trainName": "PBR MFP EXPRESS",
+      "from": {
+        "code": "DEC",
+        "name": "Delhi Cantt"
+      },
+      "to": {
+        "code": "GKP",
+        "name": "Gorakhpur Junction"
+      },
+      "departure": "18:54",
+      "arrival": "10:45",
+      "duration": "15h 51m",
+      "distanceKm": 770,
+      "pantry": "Yes",
+      "rating": 3.7,
+      "runningDays": "Thu, Fri",
+      "allClasses": [
+        "SL",
+        "3A",
+        "2A",
+        "1A"
+      ],
+      "classAvailability": [
+        {
+          "class": "1A",
+          "availability": "REGRET",
+          "fare": "2660",
+          "prediction": "No more booking",
+          "displayStatus": "Regret",
+          "predictionPercent": 0,
+          "quota": "GN"
+        },
+        {
+          "class": "SL",
+          "availability": "REGRET",
+          "fare": "410",
+          "prediction": "No more booking",
+          "displayStatus": "Regret",
+          "predictionPercent": 0,
+          "quota": "GN"
+        },
+        {
+          "class": "3A",
+          "availability": "REGRET",
+          "fare": "1110",
+          "prediction": "No more booking",
+          "displayStatus": "Regret",
+          "predictionPercent": 0,
+          "quota": "GN"
+        },
+        {
+          "class": "2A",
+          "availability": "REGRET",
+          "fare": "1585",
+          "prediction": "No more booking",
+          "displayStatus": "Regret",
+          "predictionPercent": 0,
+          "quota": "GN"
+        }
+      ]
+    },
+    {
+      "trainNumber": "12596",
+      "trainName": "GKP HUMSAFAR EX",
+      "from": {
+        "code": "ANVT",
+        "name": "Delhi Anand Vihar Terminus"
+      },
+      "to": {
+        "code": "GKP",
+        "name": "Gorakhpur Junction"
+      },
+      "departure": "20:00",
+      "arrival": "07:40",
+      "duration": "11h 40m",
+      "distanceKm": 770,
+      "pantry": "No",
+      "rating": 3.7,
+      "runningDays": "Mon, Tue, Thu",
+      "allClasses": [
+        "3A"
+      ],
+      "classAvailability": [
+        {
+          "class": "3A",
+          "availability": "GNWL259/WL38",
+          "fare": "1315",
+          "prediction": "53% Chance",
+          "displayStatus": "WL 38",
+          "predictionPercent": 53,
+          "quota": "GN"
+        }
+      ]
+    },
+    {
+      "trainNumber": "12554",
+      "trainName": "VAISHALI EXP",
+      "from": {
+        "code": "NDLS",
+        "name": "New Delhi"
+      },
+      "to": {
+        "code": "GKP",
+        "name": "Gorakhpur Junction"
+      },
+      "departure": "20:40",
+      "arrival": "09:20",
+      "duration": "12h 40m",
+      "distanceKm": 789,
+      "pantry": "Yes",
+      "rating": 3.7,
+      "runningDays": "Sun, Mon, Tue, Wed, Thu, Fri, Sat",
+      "allClasses": [
+        "SL",
+        "3E",
+        "3A",
+        "2A",
+        "1A"
+      ],
+      "classAvailability": [
+        {
+          "class": "1A",
+          "availability": "GNWL20/WL11",
+          "fare": "2760",
+          "prediction": "55% Chance",
+          "displayStatus": "WL 11",
+          "predictionPercent": 55,
+          "quota": "GN"
+        },
+        {
+          "class": "SL",
+          "availability": "GNWL234/WL122",
+          "fare": "445",
+          "prediction": "41% Chance",
+          "displayStatus": "WL 122",
+          "predictionPercent": 41,
+          "quota": "GN"
+        },
+        {
+          "class": "3E",
+          "availability": "GNWL65/WL32",
+          "fare": "1080",
+          "prediction": "43% Chance",
+          "displayStatus": "WL 32",
+          "predictionPercent": 43,
+          "quota": "GN"
+        },
+        {
+          "class": "3A",
+          "availability": "GNWL166/WL85",
+          "fare": "1165",
+          "prediction": "44% Chance",
+          "displayStatus": "WL 85",
+          "predictionPercent": 44,
+          "quota": "GN"
+        },
+        {
+          "class": "2A",
+          "availability": "GNWL90/WL43",
+          "fare": "1645",
+          "prediction": "43% Chance",
+          "displayStatus": "WL 43",
+          "predictionPercent": 43,
+          "quota": "GN"
+        }
+      ]
+    },
+    {
+      "trainNumber": "12556",
+      "trainName": "GORAKHDHAM EXP",
+      "from": {
+        "code": "NDLS",
+        "name": "New Delhi"
+      },
+      "to": {
+        "code": "GKP",
+        "name": "Gorakhpur Junction"
+      },
+      "departure": "21:25",
+      "arrival": "09:55",
+      "duration": "12h 30m",
+      "distanceKm": 784,
+      "pantry": "No",
+      "rating": 3.6,
+      "runningDays": "Sun, Mon, Tue, Wed, Thu, Fri, Sat",
+      "allClasses": [
+        "SL",
+        "3A",
+        "2A",
+        "1A"
+      ],
+      "classAvailability": [
+        {
+          "class": "1A",
+          "availability": "RLWL12/WL4",
+          "fare": "2760",
+          "prediction": "50% Chance",
+          "displayStatus": "WL 4",
+          "predictionPercent": 50,
+          "quota": "GN"
+        },
+        {
+          "class": "SL",
+          "availability": "RLWL89/WL38",
+          "fare": "445",
+          "prediction": "38% Chance",
+          "displayStatus": "WL 38",
+          "predictionPercent": 38,
+          "quota": "GN"
+        },
+        {
+          "class": "3A",
+          "availability": "RLWL61/WL29",
+          "fare": "1165",
+          "prediction": "37% Chance",
+          "displayStatus": "WL 29",
+          "predictionPercent": 37,
+          "quota": "GN"
+        },
+        {
+          "class": "2A",
+          "availability": "RLWL33/WL17",
+          "fare": "1645",
+          "prediction": "39% Chance",
+          "displayStatus": "WL 17",
+          "predictionPercent": 39,
+          "quota": "GN"
+        }
+      ]
+    },
+    {
+      "trainNumber": "15622",
+      "trainName": "ANVT KYQ EXP",
+      "from": {
+        "code": "ANVT",
+        "name": "Delhi Anand Vihar Terminus"
+      },
+      "to": {
+        "code": "GKP",
+        "name": "Gorakhpur Junction"
+      },
+      "departure": "23:45",
+      "arrival": "14:55",
+      "duration": "15h 10m",
+      "distanceKm": 736,
+      "pantry": "No",
+      "rating": 3.1,
+      "runningDays": "Thu",
+      "allClasses": [
+        "SL",
+        "3A",
+        "2A"
+      ],
+      "classAvailability": [
+        {
+          "class": "SL",
+          "availability": "GNWL379/WL145",
+          "fare": "395",
+          "prediction": "35% Chance",
+          "displayStatus": "WL 145",
+          "predictionPercent": 35,
+          "quota": "GN"
+        },
+        {
+          "class": "3A",
+          "availability": "GNWL169/WL88",
+          "fare": "1075",
+          "prediction": "41% Chance",
+          "displayStatus": "WL 88",
+          "predictionPercent": 41,
+          "quota": "GN"
+        },
+        {
+          "class": "2A",
+          "availability": "GNWL44/WL22",
+          "fare": "1530",
+          "prediction": "45% Chance",
+          "displayStatus": "WL 22",
+          "predictionPercent": 45,
+          "quota": "GN"
+        }
+      ]
+    }
+  ]
+}
