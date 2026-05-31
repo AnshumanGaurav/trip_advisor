@@ -1,15 +1,18 @@
+import sys
+import os
+# Ensure the current directory is in the Python search path for modules
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
 from fastapi import FastAPI, HTTPException, Query
-from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 from models import OptimizeRequest, OptimizeResponse
 import optimizer
 import cities_db
-import os
 from pydantic import BaseModel
 from datetime import datetime
 from typing import Optional
 import flight_api
+
 
 app = FastAPI(
     title="VoyageOptima API",
@@ -94,22 +97,8 @@ def get_city_details(city_name: str):
         raise HTTPException(status_code=404, detail=f"City '{city_name}' not found in database.")
     return city
 
-# Get absolute path to the static folder
-current_dir = os.path.dirname(os.path.abspath(__file__))
-static_dir = os.path.join(current_dir, "static")
+# Server-status or health check endpoint
+@app.get("/api/health")
+def api_health():
+    return {"status": "ok", "app": "VoyageOptima API"}
 
-# Proactively ensure the static folder exists
-if not os.path.exists(static_dir):
-    os.makedirs(static_dir)
-
-# Mount static files under /static prefix
-app.mount("/static", StaticFiles(directory=static_dir), name="static")
-
-# Serve index.html at root
-@app.get("/")
-def get_index():
-    index_path = os.path.join(static_dir, "index.html")
-    if not os.path.exists(index_path):
-        # Return a temporary simple HTML if index.html is not created yet
-        return {"message": "VoyageOptima API is running. Frontend static index.html is being created."}
-    return FileResponse(index_path)

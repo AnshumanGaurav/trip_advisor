@@ -16,3 +16,9 @@ Thumbs.db
 # Project-specific logs or system folders
 .system_generated/
 *.log
+
+# Next.js build and development artifacts
+.next/
+node_modules/
+out/
+build/

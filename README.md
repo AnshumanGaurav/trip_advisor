@@ -2,16 +2,7 @@
 
 VoyageOptima is a premium, high-performance web application designed to find the absolute cheapest starting date for multi-leg journeys. By modeling dynamic ticket fares, weekly fluctuations, stay-lengths, and transportation modes, it scans a 1-week calendar window to identify the optimal cost valley for your trip.
 
----
-
-## 🌟 Key Features
-
-* **1-Week Itinerary Optimization Scan**: Scans departure dates over a 7-day window to calculate the cheapest starting date, maintaining your exact length of stay at each stop.
-* **Interactive Date Selector Strip**: A horizontal calendar strip synchronized with a **Chart.js Cost Trend line chart**. Clicking any date card instantly renders the corresponding itinerary timeline.
-* **100% Real Flight Data**: Integrated with the **RapidAPI Fly-Scraper** endpoint for real-time economy flight prices (in INR) with exact-date caching and zero mock/dummy fallback data for flights.
-* **SOLID Architecture Backend**: Extensively refactored travel transport engine using clean Object-Oriented SOLID design principles (Providers, Factory, and Single-Responsibility components).
-* **Rich Alternatives Table**: Displays alternative carrier options with stop counts (e.g. *Non-stop*, *1 stop*) and total duration for each travel leg in a sleek glassmorphic table.
-* **Fast Autocomplete Engine**: Instant autocomplete lookups for Indian cities, displaying nearby airports (IATA codes) and railway stations dynamically as you type.
+This repository is built as a hybrid **Next.js App Router (React)** frontend paired with a serverless **FastAPI (Python)** backend, prepared for zero-configuration deployment to **Vercel**!
 
 ---
 
@@ -20,28 +11,37 @@ VoyageOptima is a premium, high-performance web application designed to find the
 ```text
 TravelApp/
 │
-├── main.py                 # FastAPI web server and routing endpoints
-├── optimizer.py            # Optimization algorithm scanning the departure calendar
-├── flight_api.py           # SOLID transport providers, factory, and API caching layer
-├── cities_db.py            # Static Indian cities coordinate & details database
-├── models.py               # Pydantic schemas for API request/response validation
-├── .gitignore              # Ignores local pycaches, virtualenvs, and log files
+├── api/                     # Python Serverless Backend
+│   ├── index.py             # Entry point (FastAPI server)
+│   ├── optimizer.py         # Optimization scan algorithm
+│   ├── cities_db.py         # Indian cities lookup coordinate database
+│   ├── flight_api.py        # SOLID transport providers, caching layer
+│   ├── models.py            # Pydantic schemas for API request/response
+│   └── *.json               # Caching databases
 │
-└── static/                 # Frontend UI Assets
-    ├── index.html          # Dashboard HTML structure
-    ├── style.css           # Premium dark-mode glassmorphic styling
-    └── app.js              # Chart, autocomplete, and interactive timeline controller
+├── src/                     # React Frontend (Next.js App Router)
+│   ├── app/
+│   │   ├── layout.js        # Optimized font loading & metadata
+│   │   ├── globals.css      # Premium dark-mode glassmorphic CSS styling
+│   │   └── page.js          # Unified React Dashboard & UI Controller
+│   └── components/
+│       └── Autocomplete.js  # Debounced React Autocomplete city input
+│
+├── package.json             # Next.js & React dependencies
+├── next.config.js           # Local API rewrite proxy rule
+├── vercel.json              # Vercel backend routing configuration
+└── requirements.txt         # Python backend dependencies
 ```
 
 ---
 
-## 🚀 How to Install and Run
+## 🚀 Local Development Guide
 
-### Prerequisites
-* Python 3.8 or higher installed on your system.
+To run this application locally, you will need **Python 3.8+** and **Node.js (LTS)** installed.
 
-### 1. Clone & Set Up Directory
-Open your terminal inside the project directory:
+### 1. Set Up Python Backend
+
+Open a terminal inside the project directory:
 
 ```bash
 # 1. Create a virtual environment
@@ -52,42 +52,37 @@ python -m venv venv
 .\venv\Scripts\Activate.ps1
 # On Mac/Linux:
 source venv/bin/activate
+
+# 3. Install backend dependencies
+pip install -r requirements.txt
+
+# 4. Start the FastAPI backend server
+python -m uvicorn api.index:app --port 8000 --reload
 ```
 
-### 2. Install Dependencies
-Install the required packages using pip:
+The backend API will now be running at **[http://127.0.0.1:8000](http://127.0.0.1:8000)**.
+
+### 2. Set Up Next.js Frontend
+
+In a **separate** terminal window (with Node.js installed):
+
 ```bash
-pip install fastapi uvicorn requests pydantic
+# 1. Install frontend dependencies
+npm install
+
+# 2. Start the Next.js development server
+npm run dev
 ```
 
-### 3. Configure RapidAPI Key (Optional)
-The application uses a default RapidAPI key, but you can set your own key as an environment variable to prevent rate limiting:
-
-```bash
-# On Windows (PowerShell):
-$env:RAPIDAPI_KEY="your_actual_rapidapi_key"
-
-# On Mac/Linux:
-export RAPIDAPI_KEY="your_actual_rapidapi_key"
-```
-
-### 4. Run the Application
-Launch the Uvicorn web server with hot-reload enabled:
-```bash
-uvicorn main:app --port 8000 --reload
-```
-
-Once running, navigate to **[http://127.0.0.1:8000](http://127.0.0.1:8000)** in your web browser to access the VoyageOptima dashboard!
+Open **[http://localhost:3000](http://localhost:3000)** in your web browser to access the VoyageOptima dashboard! Next.js will automatically proxy all `/api` requests to the Python FastAPI backend running on port 8000.
 
 ---
 
-## 📋 Production Launch TODOs
+## ☁️ Deploying to Vercel
 
-Before deploying VoyageOptima as a live consumer product, the following milestones must be completed:
+Vercel provides native out-of-the-box support for Next.js and Python Serverless Functions in a single repository:
 
-* **🗄️ Database Migration**: Replace the static `cities_db.py` coordinates and the transient in-memory Python dictionaries with a persistent database system (e.g., PostgreSQL) using Redis to cache frequent search queries.
-* **🚆 Live Train API Integration**: Replace the distance-based train pricing estimates with actual Indian Railways API endpoints (e.g., IRCTC partner channels) to query real seat inventory and fare structures.
-* **🚌 Live Bus API Integration**: Integrate RedBus or AbhiBus partner APIs to query actual tickets, timetables, and availability for inter-city buses.
-* **🔐 Login & Authentication**: Implement secure JWT/OAuth2 user registration, login systems, session controls, and profile tables for travelers to save itineraries.
-* **💳 Payment Gateway**: Add credit card, UPI, and net banking support (e.g., Stripe, Razorpay) to complete ticket booking checkout directly in the application.
-* **✈️ Flight API Upgrades**: Transition from sandboxed fly-scraper credentials to high-rate enterprise GDS portals (e.g., Amadeus, Sabre, or Skyscanner partner APIs) to support direct flight reservations.
+1. Push your project to a remote Git repository (**GitHub**, **GitLab**, or **Bitbucket**).
+2. Connect your Vercel account to your Git provider.
+3. Import this repository as a **New Project** on Vercel.
+4. Click **Deploy**. Vercel will automatically detect both Next.js and the Python backend, install dependencies, configure routing according to `vercel.json`, and make your application live in seconds!
