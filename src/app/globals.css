@@ -2165,3 +2165,57 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
         gap: 12px;
     }
 }
+
+/* ==========================================
+   Error Banner
+   ========================================== */
+.error-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    background: rgba(244, 63, 94, 0.12);
+    border: 1px solid rgba(244, 63, 94, 0.4);
+    border-radius: 10px;
+    padding: 12px 16px;
+    margin-bottom: 20px;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.error-content-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #e11d48;
+}
+
+.error-icon {
+    flex-shrink: 0;
+    color: #e11d48;
+}
+
+.error-text {
+    font-size: 13.5px;
+    font-weight: 500;
+    line-height: 1.4;
+    font-family: var(--font-body);
+}
+
+.error-close-btn {
+    background: transparent;
+    border: none;
+    color: #f43f5e;
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px;
+    border-radius: 4px;
+    transition: var(--transition-fast);
+}
+
+.error-close-btn:hover {
+    background: rgba(244, 63, 94, 0.08);
+}

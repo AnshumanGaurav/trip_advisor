@@ -1,10 +1,10 @@
-﻿'use client'
+'use client'
 
 import React, { useState, useEffect, useRef } from 'react'
 import {
   Compass, MapPin, Plus, Plane, Train, Bus, Calendar, Sparkles, Globe,
   Award, Zap, Clock, CreditCard, Lock, Unlock, Check, Info, ShieldCheck,
-  Trash2, ArrowRight, ArrowLeft
+  Trash2, ArrowRight, ArrowLeft, AlertTriangle
 } from 'lucide-react'
 import Autocomplete from '../components/Autocomplete'
 
@@ -23,6 +23,7 @@ export default function VoyageOptimaDashboard() {
     { id: 1, city: 'Delhi', nights: 2, transport: 'flight', preferredClass: 'Economy' }
   ])
   const [stopCounter, setStopCounter] = useState(1)
+  const [errorMsg, setErrorMsg] = useState(null)
 
   // --- App Flow States ---
   const [appState, setAppState] = useState('welcome') // 'welcome' | 'loading' | 'results'
@@ -202,6 +203,7 @@ export default function VoyageOptimaDashboard() {
   // --- Form Optimization Submit ---
   const handleOptimizeSubmit = async (e) => {
     e.preventDefault()
+    setErrorMsg(null)
     setAppState('loading')
     setLoadingStep(0)
 
@@ -284,7 +286,7 @@ export default function VoyageOptimaDashboard() {
 
     } catch (error) {
       clearInterval(interval)
-      alert(`Optimization Error: ${error.message}`)
+      setErrorMsg(error.message)
       setAppState('welcome')
     }
   }
@@ -784,6 +786,16 @@ export default function VoyageOptimaDashboard() {
             {/* FORM CARD */}
             <div className="landing-form-card">
               <form onSubmit={handleOptimizeSubmit}>
+
+                {errorMsg && (
+                  <div className="error-banner">
+                    <div className="error-content-wrapper">
+                      <AlertTriangle className="error-icon" size={18} />
+                      <span className="error-text">{errorMsg}</span>
+                    </div>
+                    <button type="button" className="error-close-btn" onClick={() => setErrorMsg(null)}>×</button>
+                  </div>
+                )}
 
                 {/* TOP ROW: Date | Source | Destination */}
                 <div className="form-top-row">
