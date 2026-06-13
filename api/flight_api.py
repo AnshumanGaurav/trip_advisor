@@ -33,6 +33,21 @@ _load_dotenv()
 RAPIDAPI_KEY = os.environ.get("RAPIDAPI_KEY", "")
 RAPIDAPI_HOST = "fly-scraper.p.rapidapi.com"
 
+# Initialize Supabase client
+from supabase import create_client, Client
+SUPABASE_URL = os.environ.get("SUPABASE_URL", "")
+SUPABASE_KEY = os.environ.get("SUPABASE_KEY", "")
+
+_SUPABASE_CLIENT: Optional[Client] = None
+if SUPABASE_URL and SUPABASE_KEY:
+    try:
+        _SUPABASE_CLIENT = create_client(SUPABASE_URL, SUPABASE_KEY)
+        logger.info("Supabase client initialized successfully.")
+    except Exception as e:
+        logger.error(f"Error initializing Supabase client: {e}")
+else:
+    logger.warning("Supabase credentials missing from environment variables.")
+
 FLIGHT_API_CALLS = 0
 TRAIN_API_CALLS = 0
 
@@ -195,8 +210,20 @@ class FlightTransportProvider(TransportProvider):
         cache_key = f"{from_city.lower().strip()}_{to_city.lower().strip()}_{date_str}_{cabin_class}"
         
         # 1. Exact Cache match
-        if not force_refresh and cache_key in self._route_cache:
-            entry = self._route_cache[cache_key]
+        entry = None
+        if not force_refresh:
+            if _SUPABASE_CLIENT:
+                try:
+                    res = _SUPABASE_CLIENT.table("flight_cache").select("*").eq("key", cache_key).execute()
+                    if res.data:
+                        entry = res.data[0]
+                except Exception as e:
+                    logger.error(f"Error querying flight_cache from Supabase: {e}")
+            
+            if entry is None and cache_key in self._route_cache:
+                entry = self._route_cache[cache_key]
+
+        if entry:
             price = entry["price"]
             name = entry["flight_name"]
             alts = entry["alternatives"]
@@ -304,6 +331,23 @@ class FlightTransportProvider(TransportProvider):
                     
                 if price > 0:
                     cached_time = datetime.now().isoformat()
+                    
+                    # Store in Supabase
+                    if _SUPABASE_CLIENT:
+                        try:
+                            _SUPABASE_CLIENT.table("flight_cache").upsert({
+                                "key": cache_key,
+                                "price": float(price),
+                                "flight_name": flight_name,
+                                "alternatives": alternatives,
+                                "duration": duration_str or "2h 30m",
+                                "etd": etd or "10:00 AM",
+                                "eta": eta or "12:30 PM",
+                                "cached_at": cached_time
+                            }).execute()
+                        except Exception as e:
+                            logger.error(f"Error saving flight cache to Supabase: {e}")
+
                     # Store in persistent route cache
                     self._route_cache[cache_key] = {
                         "price": price,
@@ -416,8 +460,20 @@ class TrainTransportProvider(TransportProvider):
         train_data = None
 
         # 1. Look in Cache
-        if not force_refresh and cache_key in self._cache:
-            cache_entry = self._cache[cache_key]
+        cache_entry = None
+        if not force_refresh:
+            if _SUPABASE_CLIENT:
+                try:
+                    res = _SUPABASE_CLIENT.table("train_cache").select("*").eq("key", cache_key).execute()
+                    if res.data:
+                        cache_entry = res.data[0]
+                except Exception as e:
+                    logger.error(f"Error querying train_cache from Supabase: {e}")
+            
+            if cache_entry is None and cache_key in self._cache:
+                cache_entry = self._cache[cache_key]
+
+        if cache_entry:
             train_data = cache_entry.get("data")
             cached_at = cache_entry.get("cached_at", "")
             is_cached = True
@@ -445,6 +501,18 @@ class TrainTransportProvider(TransportProvider):
                 if res_json.get("success") and res_json.get("data"):
                     train_data = res_json.get("data")
                     cached_at = datetime.now().isoformat()
+                    
+                    # Store in Supabase
+                    if _SUPABASE_CLIENT:
+                        try:
+                            _SUPABASE_CLIENT.table("train_cache").upsert({
+                                "key": cache_key,
+                                "data": train_data,
+                                "cached_at": cached_at
+                            }).execute()
+                        except Exception as e:
+                            logger.error(f"Error saving train cache to Supabase: {e}")
+
                     # Store in cache
                     self._cache[cache_key] = {
                         "data": train_data,
