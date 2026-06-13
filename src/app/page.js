@@ -531,7 +531,7 @@ export default function VoyageOptimaDashboard() {
             labels,
             datasets: [
               {
-                label: 'Cheapest (â‚¹)',
+                label: 'Cheapest (₹)',
                 data: cheapestCosts,
                 borderColor: '#10b981',
                 borderWidth: 2.5,
@@ -541,7 +541,7 @@ export default function VoyageOptimaDashboard() {
                 pointRadius: processedOptions.map(opt => opt.available ? 4 : 0)
               },
               {
-                label: 'Fastest (â‚¹)',
+                label: 'Fastest (₹)',
                 data: fastestCosts,
                 borderColor: '#3b82f6',
                 borderWidth: 2.5,
@@ -551,7 +551,7 @@ export default function VoyageOptimaDashboard() {
                 pointRadius: processedOptions.map(opt => opt.available ? 4 : 0)
               },
               {
-                label: 'Your Selection (â‚¹)',
+                label: 'Your Selection (₹)',
                 data: currentCosts,
                 borderColor: '#f59e0b',
                 borderWidth: 2.5,
@@ -1047,7 +1047,7 @@ export default function VoyageOptimaDashboard() {
                 <p className="stat-label">Best Start Date</p>
                 <h3>{formatDateString(activeRecommended?.start_date)}</h3>
                 <p className="stat-helper text-emerald">
-                  <Compass size={14} /> Save â‚¹{Math.round(activeSavings)} (vs avg)
+                  <Compass size={14} /> Save ₹{Math.round(activeSavings)} (vs avg)
                 </p>
               </div>
             </div>
@@ -1059,7 +1059,7 @@ export default function VoyageOptimaDashboard() {
               </div>
               <div className="stat-info">
                 <p className="stat-label">Cheapest Total Cost</p>
-                <h3>â‚¹{cheapestItinerary?.total_cost}</h3>
+                <h3>₹{cheapestItinerary?.total_cost}</h3>
                 <p className="stat-helper text-muted">All legs included</p>
               </div>
             </div>
@@ -1071,7 +1071,7 @@ export default function VoyageOptimaDashboard() {
               </div>
               <div className="stat-info">
                 <p className="stat-label">Fastest Trip Cost</p>
-                <h3>â‚¹{fastestItinerary?.total_cost}</h3>
+                <h3>₹{fastestItinerary?.total_cost}</h3>
                 <p className="stat-helper text-cyan" style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                   <Clock size={10} /> Trip: {fastestItinerary?.total_duration_str}
                 </p>
@@ -1170,7 +1170,7 @@ export default function VoyageOptimaDashboard() {
                       onClick={() => opt.available && setActiveOptionDate(opt.start_date)}
                     >
                       {isPreferred && (
-                        <span className="date-card-badge badge-cheapest-date" style={{ background: '#10b981', color: '#fff' }}>â­ Locked</span>
+                        <span className="date-card-badge badge-cheapest-date" style={{ background: '#10b981', color: '#fff' }}>⭐ Locked</span>
                       )}
                       {!isPreferred && isCheapest && (
                         <span className="date-card-badge badge-cheapest-date">Cheapest</span>
@@ -1197,7 +1197,7 @@ export default function VoyageOptimaDashboard() {
 
                       <span className="date-card-weekday">{weekday}</span>
                       <span className="date-card-day">{dayNum}</span>
-                      <span className="date-card-price">{opt.available ? `â‚¹${opt.total_cost}` : 'â€”'}</span>
+                      <span className="date-card-price">{opt.available ? `₹${opt.total_cost}` : '—'}</span>
                     </div>
                   )
                 })}
@@ -1228,9 +1228,9 @@ export default function VoyageOptimaDashboard() {
                         </div>
 
                         <div className="timeline-metrics" style={{ margin: '8px 0', display: 'flex', flexWrap: 'wrap', gap: '16px' }}>
-                          <span style={{ color: 'var(--accent-purple)', fontWeight: '700' }}><CreditCard size={14} /> â‚¹{leg.cost}</span>
+                          <span style={{ color: 'var(--accent-purple)', fontWeight: '700' }}><CreditCard size={14} /> ₹{leg.cost}</span>
                           <span><Clock size={14} /> {leg.duration}</span>
-                          <span>Dep: {leg.etd} â€“ Arr: {leg.eta}</span>
+                          <span>Dep: {leg.etd} – Arr: {leg.eta}</span>
 
                           {/* CLASS SELECTOR */}
                           {leg.mode === 'train' && (
@@ -1310,16 +1310,16 @@ export default function VoyageOptimaDashboard() {
                                         </div>
                                         {leg.mode === 'train' && (
                                           <div className="train-meta-details">
-                                            <span className="train-rating">â˜… {alt.rating || '4.0'}</span>
+                                            <span className="train-rating">★ {alt.rating || '4.0'}</span>
                                             <span className={`train-pantry ${alt.hasPantry ? 'has-pantry' : ''}`}>
                                               Pantry: {alt.hasPantry ? 'Yes' : 'No'}
                                             </span>
                                           </div>
                                         )}
                                       </td>
-                                      <td>{alt.etd} â€“ {alt.eta}</td>
+                                      <td>{alt.etd} – {alt.eta}</td>
                                       <td>{alt.duration}</td>
-                                      <td className="alternatives-price">â‚¹{altCost}</td>
+                                      <td className="alternatives-price">₹{altCost}</td>
                                       <td>
                                         <button
                                           className={`btn btn-secondary btn-sm`}
