@@ -3106,5 +3106,227 @@
     "duration": "6h 35m",
     "etd": "12:20 PM",
     "eta": "06:55 PM"
+  },
+  "delhi_bangalore_2026-06-17_economy": {
+    "price": 8537.0,
+    "flight_name": "Akasa Air 1812",
+    "alternatives": [
+      {
+        "price": 8537,
+        "transport_name": "Akasa Air 1812",
+        "duration": "3h 0m",
+        "stops": 0,
+        "etd": "10:55 PM",
+        "eta": "01:55 AM"
+      },
+      {
+        "price": 8623,
+        "transport_name": "Akasa Air 1350",
+        "duration": "2h 40m",
+        "stops": 0,
+        "etd": "09:55 PM",
+        "eta": "12:35 AM"
+      },
+      {
+        "price": 8770,
+        "transport_name": "SpiceJet 204",
+        "duration": "3h 5m",
+        "stops": 0,
+        "etd": "07:10 PM",
+        "eta": "10:15 PM"
+      },
+      {
+        "price": 8930,
+        "transport_name": "Akasa Air 1822",
+        "duration": "2h 50m",
+        "stops": 0,
+        "etd": "04:40 PM",
+        "eta": "07:30 PM"
+      },
+      {
+        "price": 9319,
+        "transport_name": "IndiGo 6190",
+        "duration": "5h 40m",
+        "stops": 1,
+        "etd": "05:20 AM",
+        "eta": "11:00 AM"
+      },
+      {
+        "price": 9357,
+        "transport_name": "Air India Express 1070",
+        "duration": "3h 0m",
+        "stops": 0,
+        "etd": "11:30 PM",
+        "eta": "02:30 AM"
+      },
+      {
+        "price": 9658,
+        "transport_name": "SpiceJet 199",
+        "duration": "3h 5m",
+        "stops": 0,
+        "etd": "11:55 AM",
+        "eta": "03:00 PM"
+      },
+      {
+        "price": 9700,
+        "transport_name": "Akasa Air 1574",
+        "duration": "2h 55m",
+        "stops": 0,
+        "etd": "02:10 PM",
+        "eta": "05:05 PM"
+      }
+    ],
+    "cached_at": "2026-06-13T16:52:09.629441",
+    "duration": "3h 0m",
+    "etd": "10:55 PM",
+    "eta": "01:55 AM"
+  },
+  "delhi_bangalore_2026-06-18_economy": {
+    "price": 9300.0,
+    "flight_name": "SpiceJet 204",
+    "alternatives": [
+      {
+        "price": 9300,
+        "transport_name": "SpiceJet 204",
+        "duration": "3h 5m",
+        "stops": 0,
+        "etd": "07:10 PM",
+        "eta": "10:15 PM"
+      },
+      {
+        "price": 9345,
+        "transport_name": "Akasa Air 1812",
+        "duration": "3h 0m",
+        "stops": 0,
+        "etd": "10:55 PM",
+        "eta": "01:55 AM"
+      },
+      {
+        "price": 9397,
+        "transport_name": "Akasa Air 1824",
+        "duration": "3h 0m",
+        "stops": 0,
+        "etd": "08:50 PM",
+        "eta": "11:50 PM"
+      },
+      {
+        "price": 9445,
+        "transport_name": "Air India Express 2749",
+        "duration": "2h 55m",
+        "stops": 0,
+        "etd": "10:25 AM",
+        "eta": "01:20 PM"
+      },
+      {
+        "price": 9925,
+        "transport_name": "IndiGo 828",
+        "duration": "2h 55m",
+        "stops": 0,
+        "etd": "02:30 PM",
+        "eta": "05:25 PM"
+      },
+      {
+        "price": 9925,
+        "transport_name": "IndiGo 880",
+        "duration": "2h 55m",
+        "stops": 0,
+        "etd": "03:45 PM",
+        "eta": "06:40 PM"
+      },
+      {
+        "price": 9925,
+        "transport_name": "IndiGo 826",
+        "duration": "2h 55m",
+        "stops": 0,
+        "etd": "09:30 AM",
+        "eta": "12:25 PM"
+      },
+      {
+        "price": 9925,
+        "transport_name": "IndiGo 873",
+        "duration": "2h 50m",
+        "stops": 0,
+        "etd": "08:20 AM",
+        "eta": "11:10 AM"
+      }
+    ],
+    "cached_at": "2026-06-13T16:52:13.546907",
+    "duration": "3h 5m",
+    "etd": "07:10 PM",
+    "eta": "10:15 PM"
+  },
+  "delhi_bangalore_2026-06-19_economy": {
+    "price": 9287.0,
+    "flight_name": "SpiceJet 204",
+    "alternatives": [
+      {
+        "price": 9287,
+        "transport_name": "SpiceJet 204",
+        "duration": "3h 5m",
+        "stops": 0,
+        "etd": "07:10 PM",
+        "eta": "10:15 PM"
+      },
+      {
+        "price": 9925,
+        "transport_name": "IndiGo 176",
+        "duration": "2h 55m",
+        "stops": 0,
+        "etd": "01:15 PM",
+        "eta": "04:10 PM"
+      },
+      {
+        "price": 9925,
+        "transport_name": "IndiGo 850",
+        "duration": "3h 5m",
+        "stops": 0,
+        "etd": "12:15 PM",
+        "eta": "03:20 PM"
+      },
+      {
+        "price": 9925,
+        "transport_name": "IndiGo 810",
+        "duration": "2h 55m",
+        "stops": 0,
+        "etd": "07:05 AM",
+        "eta": "10:00 AM"
+      },
+      {
+        "price": 9925,
+        "transport_name": "IndiGo 2314",
+        "duration": "2h 55m",
+        "stops": 0,
+        "etd": "05:45 AM",
+        "eta": "08:40 AM"
+      },
+      {
+        "price": 9925,
+        "transport_name": "IndiGo 820",
+        "duration": "2h 55m",
+        "stops": 0,
+        "etd": "03:00 AM",
+        "eta": "05:55 AM"
+      },
+      {
+        "price": 9925,
+        "transport_name": "IndiGo 6054",
+        "duration": "2h 55m",
+        "stops": 0,
+        "etd": "01:05 AM",
+        "eta": "04:00 AM"
+      },
+      {
+        "price": 9925,
+        "transport_name": "IndiGo 871",
+        "duration": "2h 55m",
+        "stops": 0,
+        "etd": "11:30 PM",
+        "eta": "02:25 AM"
+      }
+    ],
+    "cached_at": "2026-06-13T16:52:17.277351",
+    "duration": "3h 5m",
+    "etd": "07:10 PM",
+    "eta": "10:15 PM"
   }
 }
