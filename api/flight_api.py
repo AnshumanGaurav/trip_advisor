@@ -11,7 +11,7 @@ import cities_db
 
 logger = logging.getLogger(__name__)
 
-RAPIDAPI_KEY = os.environ.get("RAPIDAPI_KEY", "d386e1bb76msh033f50e0c9f3fffp143e6cjsna582a6348118")
+RAPIDAPI_KEY = os.environ.get("RAPIDAPI_KEY", "")
 RAPIDAPI_HOST = "fly-scraper.p.rapidapi.com"
 
 FLIGHT_API_CALLS = 0
