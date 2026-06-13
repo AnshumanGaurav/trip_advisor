@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Plane, Train } from 'lucide-react'
 
-export default function Autocomplete({ id, value, onChange, placeholder, required }) {
+export default function Autocomplete({ id, value, onChange, placeholder, required, theme }) {
   const [query, setQuery] = useState(value || '')
   const [suggestions, setSuggestions] = useState([])
   const [isOpen, setIsOpen] = useState(false)
@@ -118,7 +118,7 @@ export default function Autocomplete({ id, value, onChange, placeholder, require
   const stations = cityDetails?.railway_stations || []
 
   return (
-    <div className="input-wrapper autocomplete-wrapper" ref={containerRef}>
+    <div className={`input-wrapper autocomplete-wrapper ${theme === 'light' ? 'light-theme' : ''}`} ref={containerRef}>
       <input
         type="text"
         id={id}
@@ -150,7 +150,7 @@ export default function Autocomplete({ id, value, onChange, placeholder, require
         </ul>
       )}
       
-      {(airports.length > 0 || stations.length > 0) && (
+      {theme !== 'light' && (airports.length > 0 || stations.length > 0) && (
         <div className="city-selection-badge">
           <div className="city-selection-badge-inner">
             {airports.slice(0, 1).map((a, idx) => (

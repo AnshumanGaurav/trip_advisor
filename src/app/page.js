@@ -1,10 +1,10 @@
-'use client'
+﻿'use client'
 
 import React, { useState, useEffect, useRef } from 'react'
 import {
   Compass, MapPin, Plus, Plane, Train, Bus, Calendar, Sparkles, Globe,
   Award, Zap, Clock, CreditCard, Lock, Unlock, Check, Info, ShieldCheck,
-  Trash2, ArrowRight
+  Trash2, ArrowRight, ArrowLeft
 } from 'lucide-react'
 import Autocomplete from '../components/Autocomplete'
 
@@ -17,9 +17,10 @@ export default function VoyageOptimaDashboard() {
   const [sourceCity, setSourceCity] = useState('Bangalore')
   const [destinationCity, setDestinationCity] = useState('Bangalore')
   const [destinationTransport, setDestinationTransport] = useState('flight')
+  const [destinationTransportClass, setDestinationTransportClass] = useState('Economy')
   const [startDate, setStartDate] = useState('')
   const [stops, setStops] = useState([
-    { id: 1, city: 'Delhi', nights: 2, transport: 'flight' }
+    { id: 1, city: 'Delhi', nights: 2, transport: 'flight', preferredClass: 'Economy' }
   ])
   const [stopCounter, setStopCounter] = useState(1)
 
@@ -113,7 +114,7 @@ export default function VoyageOptimaDashboard() {
   const handleAddStop = () => {
     const nextId = stopCounter + 1
     setStopCounter(nextId)
-    setStops([...stops, { id: nextId, city: '', nights: 2, transport: 'flight' }])
+    setStops([...stops, { id: nextId, city: '', nights: 2, transport: 'flight', preferredClass: 'Economy' }])
   }
 
   const handleRemoveStop = (id) => {
@@ -528,7 +529,7 @@ export default function VoyageOptimaDashboard() {
             labels,
             datasets: [
               {
-                label: 'Cheapest (₹)',
+                label: 'Cheapest (â‚¹)',
                 data: cheapestCosts,
                 borderColor: '#10b981',
                 borderWidth: 2.5,
@@ -538,7 +539,7 @@ export default function VoyageOptimaDashboard() {
                 pointRadius: processedOptions.map(opt => opt.available ? 4 : 0)
               },
               {
-                label: 'Fastest (₹)',
+                label: 'Fastest (â‚¹)',
                 data: fastestCosts,
                 borderColor: '#3b82f6',
                 borderWidth: 2.5,
@@ -548,7 +549,7 @@ export default function VoyageOptimaDashboard() {
                 pointRadius: processedOptions.map(opt => opt.available ? 4 : 0)
               },
               {
-                label: 'Your Selection (₹)',
+                label: 'Your Selection (â‚¹)',
                 data: currentCosts,
                 borderColor: '#f59e0b',
                 borderWidth: 2.5,
@@ -757,692 +758,659 @@ export default function VoyageOptimaDashboard() {
 
   return (
     <div className="app-container">
-      
-      {/* FLOATING API COUNTER PILL */}
-      <div className="api-calls-counter" id="global-api-counter">
-        <div className="api-counter-item flight-counter">
-          <Plane size={13} />
-          <span>Flight API: <strong>{flightApiCount}</strong></span>
-        </div>
-        <div className="api-counter-divider"></div>
-        <div className="api-counter-item train-counter">
-          <Train size={13} />
-          <span>Train API: <strong>{trainApiCount}</strong></span>
-        </div>
-      </div>
 
-      {/* SIDEBAR: Trip Route Builder */}
-      <aside className="sidebar glass-panel">
-        <div className="logo-area">
-          <div className="logo-icon">
-            <Compass className="logo-compass animate-spin-slow" />
-          </div>
-          <div>
-            <h1>VoyageOptima</h1>
-            <p className="subtitle">Multi-Stop Route Cost Optimizer</p>
-          </div>
-        </div>
+      {/* ==================== WELCOME STATE: Hero Landing ==================== */}
+      {appState === 'welcome' && (
+        <div className="hero-landing">
+          <div className="hero-overlay"></div>
 
-        <form id="route-form" className="route-form" onSubmit={handleOptimizeSubmit}>
-          
-          {/* STARTING LOCATION */}
-          <div className="form-group">
-            <label htmlFor="source-city">
-              <MapPin size={16} className="label-icon source-color" /> Starting Location (Source)
-            </label>
-            <Autocomplete
-              id="source-city"
-              value={sourceCity}
-              onChange={setSourceCity}
-              placeholder="e.g. Delhi, Mumbai, Bangalore"
-              required
-            />
-          </div>
-
-          {/* INTERMEDIATE STOPS */}
-          <div className="stops-section">
-            <div className="section-header">
-              <h2>Intermediate Stops (In Order)</h2>
-              <button type="button" className="btn btn-secondary btn-sm" onClick={handleAddStop}>
-                <Plus size={14} /> Add Stop
-              </button>
+          {/* TOP NAVIGATION */}
+          <nav className="top-nav">
+            <div className="nav-logo">
+              <Compass className="nav-logo-icon" size={22} />
+              <span>VoyageOptima</span>
             </div>
+            <div className="nav-actions">
+              <button className="nav-btn nav-btn-login" type="button">Log in</button>
+              <button className="nav-btn nav-btn-signup" type="button">Sign up</button>
+            </div>
+          </nav>
 
-            <div className="stops-list">
-              <div className="leg-connector-line"></div>
-              {stops.map((stop, idx) => (
-                <div key={stop.id} className="stop-card">
-                  <div className="stop-card-header">
-                    <span className="stop-card-title">Stop #{idx + 1}</span>
-                    <button
-                      type="button"
-                      className="btn-remove-stop"
-                      title="Remove Stop"
-                      onClick={() => handleRemoveStop(stop.id)}
-                    >
-                      <Trash2 size={14} />
-                    </button>
-                  </div>
+          {/* HERO CONTENT */}
+          <div className="hero-content">
+            <h1 className="hero-title">Travel Planner</h1>
+            <p className="hero-subtitle">Plan your next adventure</p>
 
-                  <div className="stop-card-inputs">
-                    <div className="form-group">
-                      <label>City</label>
-                      <Autocomplete
-                        value={stop.city}
-                        onChange={(val) => handleStopChange(stop.id, 'city', val)}
-                        placeholder="e.g. Delhi"
-                        required
-                      />
-                    </div>
-                    <div className="form-group">
-                      <label>Nights Stay</label>
+            {/* FORM CARD */}
+            <div className="landing-form-card">
+              <form onSubmit={handleOptimizeSubmit}>
+
+                {/* TOP ROW: Date | Source | Destination */}
+                <div className="form-top-row">
+                  <div className="landing-form-group">
+                    <label className="landing-label">Start Date</label>
+                    <div className="landing-input-wrapper">
+                      <Calendar size={16} className="input-icon" />
                       <input
-                        type="number"
-                        className="stop-nights-input"
-                        min="0"
-                        value={stop.nights}
-                        onChange={(e) => handleStopChange(stop.id, 'nights', e.target.value)}
+                        type="date"
+                        className="landing-input has-icon"
+                        id="start-date"
+                        value={startDate}
+                        onChange={(e) => setStartDate(e.target.value)}
                         required
                       />
                     </div>
                   </div>
-
-                  <div className="form-group">
-                    <label>Leg Transport Mode <span className="subtitle">(To this stop)</span></label>
-                    <div className="transport-selector">
-                      {['flight', 'train', 'bus'].map(mode => (
-                        <label key={mode} className="transport-option">
-                          <input
-                            type="radio"
-                            name={`stop_transport_${stop.id}`}
-                            value={mode}
-                            checked={stop.transport === mode}
-                            onChange={() => handleStopChange(stop.id, 'transport', mode)}
-                          />
-                          <span className="transport-btn">
-                            {mode === 'flight' && <Plane size={14} />}
-                            {mode === 'train' && <Train size={14} />}
-                            {mode === 'bus' && <Bus size={14} />}
-                            <span style={{ textTransform: 'capitalize' }}>{mode}</span>
-                          </span>
-                        </label>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* FINAL DESTINATION */}
-          <div className="destination-section" style={{ position: 'relative' }}>
-            <div className="form-group" style={{ marginBottom: '24px' }}>
-              <label>
-                <Plus size={16} className="label-icon divider-icon" /> Final Transport Mode
-              </label>
-              <div className="transport-selector">
-                {['flight', 'train', 'bus'].map(mode => (
-                  <label key={mode} className="transport-option">
-                    <input
-                      type="radio"
-                      name="destination_transport"
-                      value={mode}
-                      checked={destinationTransport === mode}
-                      onChange={() => setDestinationTransport(mode)}
+                  <div className="landing-form-group">
+                    <label className="landing-label">Source</label>
+                    <Autocomplete
+                      id="source-city"
+                      value={sourceCity}
+                      onChange={setSourceCity}
+                      placeholder="Source City"
+                      required
+                      theme="light"
                     />
-                    <span className="transport-btn">
-                      {mode === 'flight' && <Plane size={14} />}
-                      {mode === 'train' && <Train size={14} />}
-                      {mode === 'bus' && <Bus size={14} />}
-                      <span style={{ textTransform: 'capitalize' }}>{mode}</span>
-                    </span>
-                  </label>
-                ))}
-              </div>
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="destination-city">
-                <MapPin size={16} className="label-icon dest-color" /> Final Destination
-              </label>
-              <Autocomplete
-                id="destination-city"
-                value={destinationCity}
-                onChange={setDestinationCity}
-                placeholder="e.g. Goa, Jaipur"
-                required
-              />
-            </div>
-          </div>
-
-          {/* SEARCH START DATE */}
-          <div className="form-group">
-            <label htmlFor="start-date">
-              <Calendar size={16} className="label-icon date-color" /> Search Start Date
-            </label>
-            <div className="input-wrapper">
-              <input
-                type="date"
-                id="start-date"
-                value={startDate}
-                onChange={(e) => setStartDate(e.target.value)}
-                required
-              />
-            </div>
-            <span className="field-hint">We will scan a 1-week window starting from this date.</span>
-          </div>
-
-          {/* OPTIMIZE SUBMIT */}
-          <button type="submit" className="btn btn-primary btn-block">
-            <Sparkles size={16} /> Optimize My Voyage
-          </button>
-        </form>
-      </aside>
-
-      {/* MAIN DASHBOARD AREA */}
-      <main className="dashboard-main">
-        
-        {/* STATE 1: Welcome/Welcome State */}
-        {appState === 'welcome' && (
-          <div id="welcome-state" className="state-panel active">
-            <div className="welcome-card glass-panel">
-              <div className="welcome-globe">
-                <Globe size={40} className="globe-animated" />
-              </div>
-              <h2>Optimize Your Multi-Stop Journey</h2>
-              <p>
-                VoyageOptima models complex transport rates, weekly fluctuations, and stay-lengths to map the cheapest calendar days for multi-leg trips. 
-              </p>
-              <div className="welcome-features">
-                <div className="feature-item">
-                  <Award size={24} />
-                  <div>
-                    <h4>Cost Analytics</h4>
-                    <p>Simulates real-world dynamic ticketing spikes to find hidden savings.</p>
                   </div>
-                </div>
-                <div className="feature-item">
-                  <Compass size={24} />
-                  <div>
-                    <h4>Interactive Charts</h4>
-                    <p>Click any point on the cost timeline to preview the trip details instantly.</p>
-                  </div>
-                </div>
-                <div className="feature-item">
-                  <Calendar size={24} />
-                  <div>
-                    <h4>Flexible Stays</h4>
-                    <p>Maintains your exact length of stay in each destination automatically.</p>
-                  </div>
-                </div>
-              </div>
-              <button className="btn btn-primary btn-lg" onClick={handleScrollToForm}>Build My Route</button>
-            </div>
-          </div>
-        )}
-
-        {/* STATE 2: Loading State */}
-        {appState === 'loading' && (
-          <div id="loading-state" className="state-panel active">
-            <div className="loading-card glass-panel">
-              <div className="radar-container">
-                <div className="radar-ring"></div>
-                <div className="radar-ring"></div>
-                <div className="radar-ring"></div>
-                <Compass className="radar-icon animate-spin" />
-              </div>
-              <h3>Scanning Travel Window</h3>
-              <p>Querying dynamic travel API endpoints for pricing & availability...</p>
-              
-              <div className="loading-logs">
-                <div className={`log-line ${loadingStep >= 0 ? (loadingStep > 0 ? 'completed' : 'active') : ''}`}>
-                  {loadingStep > 0 ? <Check size={14} /> : <Compass size={14} className="spin" />}
-                  Fetching distances & coordinates...
-                </div>
-                <div className={`log-line ${loadingStep >= 1 ? (loadingStep > 1 ? 'completed' : 'active') : ''}`}>
-                  {loadingStep > 1 ? <Check size={14} /> : (loadingStep === 1 ? <Compass size={14} className="spin" /> : <Compass size={14} />)}
-                  Querying flight, train, and bus databases...
-                </div>
-                <div className={`log-line ${loadingStep >= 2 ? (loadingStep > 2 ? 'completed' : 'active') : ''}`}>
-                  {loadingStep > 2 ? <Check size={14} /> : (loadingStep === 2 ? <Compass size={14} className="spin" /> : <Compass size={14} />)}
-                  Summing up multi-leg combinations...
-                </div>
-                <div className={`log-line ${loadingStep >= 3 ? (loadingStep > 3 ? 'completed' : 'active') : ''}`}>
-                  {loadingStep > 3 ? <Check size={14} /> : (loadingStep === 3 ? <Compass size={14} className="spin" /> : <Compass size={14} />)}
-                  Identifying optimal cost valley...
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* STATE 3: Results Dashboard */}
-        {appState === 'results' && (
-          <div id="results-state" className="state-panel active">
-            
-            {/* OPTIMIZATION PREFERENCE PANEL */}
-            <div className="optimization-preference-panel glass-panel">
-              <div className="opt-preference-header">
-                <div>
-                  <h4>Optimization Preference</h4>
-                  <p className="subtitle" style={{ margin: '2px 0 0 0', fontSize: '11.5px', color: 'var(--text-secondary)' }}>
-                    Select your primary priority. The dashboard will dynamically update and calculate cost-time trade-offs.
-                  </p>
-                </div>
-                <div className="toggle-group">
-                  <button
-                    className={`toggle-btn ${optimizationGoal === 'cost' ? 'active' : ''}`}
-                    onClick={() => setOptimizationGoal('cost')}
-                  >
-                    <CreditCard size={12} /> Cheapest
-                  </button>
-                  <button
-                    className={`toggle-btn ${optimizationGoal === 'time' ? 'active' : ''}`}
-                    onClick={() => setOptimizationGoal('time')}
-                  >
-                    <Clock size={12} /> Fastest
-                  </button>
-                </div>
-              </div>
-              
-              {/* TRADE-OFF IMPACT BANNER */}
-              <div className={`tradeoff-banner ${optimizationGoal === 'time' ? 'time-optimized' : ''}`}>
-                <Info size={16} />
-                <span>
-                  Currently optimizing for <strong>{optimizationGoal === 'cost' ? 'Cheapest' : 'Fastest'}</strong>. Showing the itinerary with the lowest {optimizationGoal === 'cost' ? 'financial impact' : 'transit time'}.
-                </span>
-              </div>
-            </div>
-
-            {/* TOP STATS CARDS */}
-            <section className="stats-grid">
-              {/* BEST START DATE (HERO) */}
-              <div className="stat-card glass-panel highlight-card">
-                <div className="card-glow"></div>
-                <div className="stat-icon-wrapper savings-icon">
-                  <Award size={28} />
-                </div>
-                <div className="stat-info">
-                  <p className="stat-label">Best Start Date</p>
-                  <h3>{formatDateString(activeRecommended?.start_date)}</h3>
-                  <p className="stat-helper text-emerald">
-                    <Compass size={14} /> Save ₹{Math.round(activeSavings)} (vs avg)
-                  </p>
-                </div>
-              </div>
-
-              {/* CHEAPEST TOTAL COST */}
-              <div className="stat-card glass-panel">
-                <div className="stat-icon-wrapper cost-icon">
-                  <CreditCard size={28} />
-                </div>
-                <div className="stat-info">
-                  <p className="stat-label">Cheapest Total Cost</p>
-                  <h3>₹{cheapestItinerary?.total_cost}</h3>
-                  <p className="stat-helper text-muted">All legs included</p>
-                </div>
-              </div>
-
-              {/* FASTEST TRIP COST */}
-              <div className="stat-card glass-panel">
-                <div className="stat-icon-wrapper fastest-icon">
-                  <Zap size={28} />
-                </div>
-                <div className="stat-info">
-                  <p className="stat-label">Fastest Trip Cost</p>
-                  <h3>₹{fastestItinerary?.total_cost}</h3>
-                  <p className="stat-helper text-cyan" style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                    <Clock size={10} /> Trip: {fastestItinerary?.total_duration_str}
-                  </p>
-                </div>
-              </div>
-            </section>
-
-            {/* CHART CONTAINER */}
-            <section className="chart-section glass-panel">
-              <div className="chart-header">
-                <div>
-                  <h3>Trip Analytics Dashboard</h3>
-                  <p className="subtitle">Compare Cost, Active Transit Time & Elapsed Duration per Departure Date</p>
-                </div>
-                <div className="chart-legend">
-                  <span className="legend-cheapest"><span className="dot"></span> Selected Date</span>
-                  <span className="legend-standard"><span className="dot"></span> Other Dates</span>
-                  <span className="legend-soldout"><span className="dot"></span> Sold Out / Unavailable</span>
-                </div>
-              </div>
-
-              <div className="charts-container charts-container-3">
-                <div className="chart-box">
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-                    <CreditCard size={14} style={{ color: 'var(--accent-purple)' }} />
-                    <h4 className="chart-box-title" style={{ margin: 0, fontSize: '13px', fontWeight: '600', color: 'var(--text-secondary)' }}>
-                      Trip Cost (INR)
-                    </h4>
-                  </div>
-                  <div className="chart-wrapper">
-                    <canvas ref={costChartRef} id="cost-chart"></canvas>
-                  </div>
-                </div>
-                
-                <div className="chart-box">
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-                    <Zap size={14} style={{ color: '#3b82f6' }} />
-                    <h4 className="chart-box-title" style={{ margin: 0, fontSize: '13px', fontWeight: '600', color: '#3b82f6' }}>
-                      Active Transit Time (Hours)
-                    </h4>
-                  </div>
-                  <div className="chart-wrapper">
-                    <canvas ref={transitChartRef} id="transit-chart"></canvas>
+                  <div className="landing-form-group">
+                    <label className="landing-label">Destination</label>
+                    <Autocomplete
+                      id="destination-city"
+                      value={destinationCity}
+                      onChange={setDestinationCity}
+                      placeholder="Destination City"
+                      required
+                      theme="light"
+                    />
                   </div>
                 </div>
 
-                <div className="chart-box">
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-                    <Clock size={14} style={{ color: '#06b6d4' }} />
-                    <h4 className="chart-box-title" style={{ margin: 0, fontSize: '13px', fontWeight: '600', color: '#06b6d4' }}>
-                      Total Trip Duration (Days)
-                    </h4>
-                  </div>
-                  <div className="chart-wrapper">
-                    <canvas ref={durationChartRef} id="duration-chart"></canvas>
-                  </div>
-                </div>
-              </div>
-            </section>
+                {/* STOPS SECTION */}
+                <div className="stops-section-landing">
+                  <p className="stops-header-text">Add cities you'd like to explore along the way</p>
 
-            {/* ITINERARY TIMELINE & BREAKDOWN */}
-            <section className="details-grid">
-              
-              {/* LEFT COLUMN: Timeline */}
-              <div className="timeline-column glass-panel">
-                <div className="panel-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
-                  <div>
-                    <h3>Itinerary Timeline</h3>
-                    <p className="subtitle">Detailed breakdown for trip starting on {formatDateString(activeItinerary?.start_date)}</p>
-                  </div>
-                  <button
-                    className={`btn btn-secondary btn-sm ${preferredDate === activeOptionDate ? 'btn-preferred-active' : ''}`}
-                    style={{ borderRadius: '20px' }}
-                    onClick={() => setPreferredDate(preferredDate === activeOptionDate ? null : activeOptionDate)}
-                  >
-                    <Check size={12} /> {preferredDate === activeOptionDate ? 'Locked Preference' : 'Set as Preference'}
-                  </button>
-                </div>
-
-                {/* DATE SELECTOR STRIP */}
-                <div className="date-selector-strip">
-                  {processedOptions.map(opt => {
-                    const isCheapest = opt.start_date === cheapestItinerary?.start_date
-                    const isFastest = opt.start_date === fastestItinerary?.start_date
-                    const isActive = opt.start_date === activeOptionDate
-                    const isPreferred = opt.start_date === preferredDate
-
-                    const d = new Date(opt.start_date)
-                    const weekday = d.toLocaleDateString('en-US', { weekday: 'short' })
-                    const dayNum = d.toLocaleDateString('en-US', { day: 'numeric', month: 'short' })
-
-                    return (
-                      <div
-                        key={opt.start_date}
-                        className={`date-card ${isActive ? 'active' : ''} ${!opt.available ? 'sold-out' : ''} ${isPreferred ? 'preferred-choice' : ''}`}
-                        onClick={() => opt.available && setActiveOptionDate(opt.start_date)}
-                      >
-                        {isPreferred && (
-                          <span className="date-card-badge badge-cheapest-date" style={{ background: '#10b981', color: '#fff' }}>⭐ Locked</span>
-                        )}
-                        {!isPreferred && isCheapest && (
-                          <span className="date-card-badge badge-cheapest-date">Cheapest</span>
-                        )}
-                        {!isPreferred && !isCheapest && isFastest && (
-                          <span className="date-card-badge badge-cheapest-date" style={{ background: '#06b6d4', color: '#fff' }}>Fastest</span>
-                        )}
-                        {!opt.available && (
-                          <span className="date-card-badge badge-soldout-date">Sold Out</span>
-                        )}
-
-                        {opt.available && (
-                          <button
-                            className={`date-card-lock-btn ${isPreferred ? 'locked' : ''}`}
-                            onClick={(e) => {
-                              e.stopPropagation()
-                              setPreferredDate(isPreferred ? null : opt.start_date)
-                            }}
-                            title="Lock Date Option"
+                  {stops.map((stop, idx) => (
+                    <div key={stop.id} className="stop-block">
+                      <div className="stop-block-header">
+                        <span className="stop-block-title">Stop {idx + 1}</span>
+                        <button
+                          type="button"
+                          className="stop-delete-btn"
+                          title="Remove Stop"
+                          onClick={() => handleRemoveStop(stop.id)}
+                        >
+                          <Trash2 size={16} />
+                        </button>
+                      </div>
+                      <div className="stop-row-fields">
+                        <div className="landing-form-group stop-field-city">
+                          <label className="landing-label">City</label>
+                          <Autocomplete
+                            value={stop.city}
+                            onChange={(val) => handleStopChange(stop.id, 'city', val)}
+                            placeholder="Search the city you want to explore"
+                            required
+                            theme="light"
+                          />
+                        </div>
+                        <div className="landing-form-group stop-field-transport">
+                          <label className="landing-label">Transport</label>
+                          <select
+                            className="landing-select"
+                            value={stop.transport}
+                            onChange={(e) => handleStopChange(stop.id, 'transport', e.target.value)}
                           >
-                            {isPreferred ? <Lock size={10} /> : <Unlock size={10} />}
-                          </button>
-                        )}
-
-                        <span className="date-card-weekday">{weekday}</span>
-                        <span className="date-card-day">{dayNum}</span>
-                        <span className="date-card-price">{opt.available ? `₹${opt.total_cost}` : '—'}</span>
+                            <option value="flight">Flight</option>
+                            <option value="train">Train</option>
+                            <option value="bus">Bus</option>
+                          </select>
+                        </div>
+                        <div className="landing-form-group stop-field-class">
+                          <label className="landing-label">Preferred Class</label>
+                          <select
+                            className="landing-select"
+                            value={stop.preferredClass || 'Economy'}
+                            onChange={(e) => handleStopChange(stop.id, 'preferredClass', e.target.value)}
+                          >
+                            <option value="Economy">Economy</option>
+                            <option value="Business">Business</option>
+                            <option value="SL">SL</option>
+                            <option value="3A">3A</option>
+                            <option value="2A">2A</option>
+                            <option value="1A">1A</option>
+                          </select>
+                        </div>
+                        <div className="landing-form-group stop-field-nights">
+                          <label className="landing-label">Nights</label>
+                          <input
+                            type="number"
+                            className="landing-input"
+                            min="0"
+                            value={stop.nights}
+                            onChange={(e) => handleStopChange(stop.id, 'nights', e.target.value)}
+                            required
+                          />
+                        </div>
                       </div>
-                    )
-                  })}
+                    </div>
+                  ))}
+
+                  <button type="button" className="btn-add-city" onClick={handleAddStop}>
+                    <Plus size={16} /> Add City
+                  </button>
                 </div>
 
-                {/* TIMELINE CONTAINER */}
-                <div className="timeline-container">
-                  {activeItinerary?.legs?.map((leg, legIdx) => {
-                    const isLast = legIdx === activeItinerary.legs.length - 1
-                    return (
-                      <div key={legIdx} className="timeline-node" style={{ position: 'relative' }}>
-                        {leg.loading && (
-                          <div className="card-mini-loader">
-                            <Compass className="animate-spin" /> Querying Travel APIs...
-                          </div>
-                        )}
-
-                        <div className={`timeline-indicator ${legIdx === 0 ? 'ind-start' : (leg.mode === 'flight' ? 'ind-flight' : leg.mode === 'train' ? 'ind-train' : 'ind-bus')}`}>
-                          {legIdx === 0 ? <MapPin size={12} /> : (leg.mode === 'flight' ? <Plane size={12} /> : <Train size={12} />)}
-                        </div>
-
-                        <div className="timeline-content">
-                          <div className="timeline-content-header">
-                            <h4>
-                              {leg.from_city} <ArrowRight size={14} style={{ display: 'inline', margin: '0 6px', verticalAlign: 'middle' }} /> {leg.to_city}
-                            </h4>
-                            <span className="timeline-date">{formatDateString(leg.date)}</span>
-                          </div>
-
-                          <div className="timeline-metrics" style={{ margin: '8px 0', display: 'flex', flexWrap: 'wrap', gap: '16px' }}>
-                            <span style={{ color: 'var(--accent-purple)', fontWeight: '700' }}><CreditCard size={14} /> ₹{leg.cost}</span>
-                            <span><Clock size={14} /> {leg.duration}</span>
-                            <span>Dep: {leg.etd} – Arr: {leg.eta}</span>
-                            
-                            {/* CLASS SELECTOR */}
-                            {leg.mode === 'train' && (
-                              <div className="train-class-select-container">
-                                <span className="train-class-label">Class</span>
-                                <select
-                                  className="train-class-select"
-                                  value={leg.selected_class}
-                                  onChange={(e) => handleLegClassChange(legIdx, e.target.value)}
-                                >
-                                  {['SL', '3A', '2A', '1A'].map(tc => (
-                                    <option key={tc} value={tc}>{tc}</option>
-                                  ))}
-                                </select>
-                              </div>
-                            )}
-
-                            {leg.mode === 'flight' && (
-                              <div className="flight-class-select-container">
-                                <span className="flight-class-label">Class</span>
-                                <select
-                                  className="flight-class-select"
-                                  value={leg.selected_class}
-                                  onChange={(e) => handleLegClassChange(legIdx, e.target.value)}
-                                >
-                                  {['Economy', 'Business'].map(fc => (
-                                    <option key={fc} value={fc}>{fc}</option>
-                                  ))}
-                                </select>
-                              </div>
-                            )}
-
-                            {/* LEG LOCK BUTTON */}
-                            <button
-                              className={`leg-lock-btn ${leg.locked ? 'locked' : ''}`}
-                              onClick={() => handleToggleLegLock(legIdx)}
-                              title={leg.locked ? 'Unlock choice' : 'Lock choice'}
-                            >
-                              {leg.locked ? <Lock size={10} style={{ display: 'inline', marginRight: '4px' }} /> : <Unlock size={10} style={{ display: 'inline', marginRight: '4px' }} />}
-                              {leg.locked ? 'Locked' : 'Lock Leg'}
-                            </button>
-                          </div>
-
-                          <p style={{ fontSize: '11px', color: 'var(--text-muted)', margin: '4px 0' }}>
-                            Active Transport: <strong>{leg.transport_name}</strong>
-                          </p>
-
-                          {/* ALTERNATIVES PREMIUM TABLE */}
-                          {leg.alternatives && leg.alternatives.length > 0 && (
-                            <div className="alternatives-container">
-                              <table className="alternatives-table">
-                                <thead>
-                                  <tr>
-                                    <th>Alternative Option</th>
-                                    <th>Times</th>
-                                    <th>Duration</th>
-                                    <th>Cost</th>
-                                    <th>Action</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  {leg.alternatives.map((alt, altIdx) => {
-                                    const altCost = leg.mode === 'train'
-                                      ? Math.ceil((alt.classAvailability?.find(ca => ca.class === leg.selected_class)?.fare || leg.cost))
-                                      : Math.ceil(alt.price !== undefined ? alt.price : alt.cost)
-                                    
-                                    const isSelected = leg.mode === 'train'
-                                      ? leg.selected_train_number === alt.trainNumber
-                                      : leg.selected_flight_name === alt.transport_name
-
-                                    return (
-                                      <tr key={altIdx} style={isSelected ? { background: 'rgba(139, 92, 246, 0.1)' } : {}}>
-                                        <td>
-                                          <div className="alternatives-carrier">
-                                            {leg.mode === 'flight' ? <Plane size={12} /> : <Train size={12} />}
-                                            {leg.mode === 'flight' ? alt.transport_name : `${alt.trainNumber} - ${alt.trainName}`}
-                                          </div>
-                                          {leg.mode === 'train' && (
-                                            <div className="train-meta-details">
-                                              <span className="train-rating">★ {alt.rating || '4.0'}</span>
-                                              <span className={`train-pantry ${alt.hasPantry ? 'has-pantry' : ''}`}>
-                                                Pantry: {alt.hasPantry ? 'Yes' : 'No'}
-                                              </span>
-                                            </div>
-                                          )}
-                                        </td>
-                                        <td>{alt.etd} – {alt.eta}</td>
-                                        <td>{alt.duration}</td>
-                                        <td className="alternatives-price">₹{altCost}</td>
-                                        <td>
-                                          <button
-                                            className={`btn btn-secondary btn-sm`}
-                                            style={{ padding: '4px 8px', fontSize: '10px' }}
-                                            onClick={() => handleSwapAlternative(legIdx, alt)}
-                                          >
-                                            {isSelected ? 'Selected' : 'Swap'}
-                                          </button>
-                                        </td>
-                                      </tr>
-                                    )
-                                  })}
-                                </tbody>
-                              </table>
-                            </div>
-                          )}
-
-                          {/* NIGHTS STAY BANNER */}
-                          {leg.nights > 0 && (
-                            <div className="timeline-stay">
-                              <Compass size={14} /> Stay {leg.nights} Nights in {leg.to_city}
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    )
-                  })}
-
-                  {/* FINAL TERMINAL NODE */}
-                  <div className="timeline-node">
-                    <div className="timeline-indicator ind-end">
-                      <Award size={12} />
+                {/* FINAL LEG TRANSPORT */}
+                <div className="final-leg-section">
+                  <div className="final-leg-row">
+                    <div className="landing-form-group">
+                      <label className="landing-label">Final leg transport</label>
+                      <select
+                        className="landing-select"
+                        value={destinationTransport}
+                        onChange={(e) => setDestinationTransport(e.target.value)}
+                      >
+                        <option value="flight">Flight</option>
+                        <option value="train">Train</option>
+                        <option value="bus">Bus</option>
+                      </select>
                     </div>
-                    <div className="timeline-content" style={{ background: 'rgba(244, 63, 94, 0.05)', borderColor: 'rgba(244, 63, 94, 0.15)' }}>
-                      <div className="timeline-content-header">
-                        <h4 style={{ color: 'var(--color-danger)' }}>Final Destination Reached!</h4>
-                        <span className="timeline-date" style={{ color: 'var(--color-danger)' }}>
-                          {formatDateString(activeItinerary?.arrival_date)}
-                        </span>
-                      </div>
-                      <p style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
-                        End of voyage at <strong>{destinationCity}</strong>. All multi-leg date optimization windows mapped successfully!
-                      </p>
+                    <div className="landing-form-group">
+                      <label className="landing-label">Class</label>
+                      <select
+                        className="landing-select"
+                        value={destinationTransportClass}
+                        onChange={(e) => setDestinationTransportClass(e.target.value)}
+                      >
+                        <option value="Economy">Economy</option>
+                        <option value="Business">Business</option>
+                        <option value="SL">SL</option>
+                        <option value="3A">3A</option>
+                        <option value="2A">2A</option>
+                        <option value="1A">1A</option>
+                      </select>
                     </div>
                   </div>
                 </div>
-              </div>
 
-              {/* RIGHT COLUMN: Journey Summary */}
-              <div className="summary-column glass-panel">
-                <div className="panel-header">
-                  <h3>Journey Summary</h3>
-                  <p className="subtitle">Key insights and details</p>
-                </div>
+                {/* OPTIMIZE BUTTON */}
+                <button type="submit" className="btn-optimize-landing">
+                  <Sparkles size={18} /> Optimize My Voyage
+                </button>
 
-                <div className="journey-stats-card">
-                  <div className="journey-summary-row">
-                    <span className="label"><Plane size={12} style={{ display: 'inline', verticalAlign: 'middle', marginRight: '5px' }} /> Departs:</span>
-                    <span className="value" style={{ color: 'var(--accent-purple)', fontWeight: '700' }}>
-                      {formatDateString(activeItinerary?.start_date)}
-                    </span>
-                  </div>
-                  <div className="journey-summary-row">
-                    <span className="label"><Award size={12} style={{ display: 'inline', verticalAlign: 'middle', marginRight: '5px' }} /> Arrives:</span>
-                    <span className="value" style={{ color: '#10b981', fontWeight: '700' }}>
-                      {formatDateString(activeItinerary?.arrival_date)}
-                    </span>
-                  </div>
-                  <div className="journey-summary-row" style={{ borderTop: '1px solid rgba(255,255,255,0.05)', marginTop: '6px', paddingTop: '10px' }}>
-                    <span className="label">Total Stops:</span>
-                    <span className="value">{activeItinerary?.legs?.length - 1}</span>
-                  </div>
-                  <div className="journey-summary-row">
-                    <span className="label">Total Nights:</span>
-                    <span className="value">{activeItinerary?.legs?.reduce((sum, l) => sum + (l.nights || 0), 0)}</span>
-                  </div>
-                  <div className="journey-summary-row">
-                    <span className="label">Trip Duration (Elapsed):</span>
-                    <span className="value">{activeItinerary?.total_duration_str}</span>
-                  </div>
-                  <div className="journey-summary-row">
-                    <span className="label">Active Travel Time:</span>
-                    <span className="value" style={{ color: 'var(--accent-cyan)', fontWeight: '700' }}>
-                      {formatMinutesToHoursMins(getActiveTravelMins(activeItinerary))}
-                    </span>
-                  </div>
-                </div>
-
-                <div className="travel-advisory-card">
-                  <div className="advisory-icon"><ShieldCheck size={24} /></div>
-                  <div>
-                    <h4>Voyage Guarantee</h4>
-                    <p>We automatically filter out any start dates that contain sold-out legs, ensuring 100% reservation confidence.</p>
-                  </div>
-                </div>
-              </div>
-
-            </section>
-
+              </form>
+            </div>
           </div>
-        )}
+        </div>
+      )}
 
-      </main>
+      {/* ==================== LOADING STATE ==================== */}
+      {appState === 'loading' && (
+        <div className="loading-fullscreen">
+          <div className="loading-card glass-panel">
+            <div className="radar-container">
+              <div className="radar-ring"></div>
+              <div className="radar-ring"></div>
+              <div className="radar-ring"></div>
+              <Compass className="radar-icon animate-spin" />
+            </div>
+            <h3>Scanning Travel Window</h3>
+            <p>Querying dynamic travel API endpoints for pricing & availability...</p>
+
+            <div className="loading-logs">
+              <div className={`log-line ${loadingStep >= 0 ? (loadingStep > 0 ? 'completed' : 'active') : ''}`}>
+                {loadingStep > 0 ? <Check size={14} /> : <Compass size={14} className="spin" />}
+                Fetching distances & coordinates...
+              </div>
+              <div className={`log-line ${loadingStep >= 1 ? (loadingStep > 1 ? 'completed' : 'active') : ''}`}>
+                {loadingStep > 1 ? <Check size={14} /> : (loadingStep === 1 ? <Compass size={14} className="spin" /> : <Compass size={14} />)}
+                Querying flight, train, and bus databases...
+              </div>
+              <div className={`log-line ${loadingStep >= 2 ? (loadingStep > 2 ? 'completed' : 'active') : ''}`}>
+                {loadingStep > 2 ? <Check size={14} /> : (loadingStep === 2 ? <Compass size={14} className="spin" /> : <Compass size={14} />)}
+                Summing up multi-leg combinations...
+              </div>
+              <div className={`log-line ${loadingStep >= 3 ? (loadingStep > 3 ? 'completed' : 'active') : ''}`}>
+                {loadingStep > 3 ? <Check size={14} /> : (loadingStep === 3 ? <Compass size={14} className="spin" /> : <Compass size={14} />)}
+                Identifying optimal cost valley...
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ==================== RESULTS STATE ==================== */}
+      {appState === 'results' && (
+        <div className="results-fullwidth">
+
+          {/* BACK BUTTON */}
+          <button className="btn-back-to-form" onClick={() => setAppState('welcome')}>
+            <ArrowLeft size={16} /> New Search
+          </button>
+
+
+          {/* OPTIMIZATION PREFERENCE PANEL */}
+          <div className="optimization-preference-panel glass-panel">
+            <div className="opt-preference-header">
+              <div>
+                <h4>Optimization Preference</h4>
+                <p className="subtitle" style={{ margin: '2px 0 0 0', fontSize: '11.5px', color: 'var(--text-secondary)' }}>
+                  Select your primary priority. The dashboard will dynamically update and calculate cost-time trade-offs.
+                </p>
+              </div>
+              <div className="toggle-group">
+                <button
+                  className={`toggle-btn ${optimizationGoal === 'cost' ? 'active' : ''}`}
+                  onClick={() => setOptimizationGoal('cost')}
+                >
+                  <CreditCard size={12} /> Cheapest
+                </button>
+                <button
+                  className={`toggle-btn ${optimizationGoal === 'time' ? 'active' : ''}`}
+                  onClick={() => setOptimizationGoal('time')}
+                >
+                  <Clock size={12} /> Fastest
+                </button>
+              </div>
+            </div>
+
+            {/* TRADE-OFF IMPACT BANNER */}
+            <div className={`tradeoff-banner ${optimizationGoal === 'time' ? 'time-optimized' : ''}`}>
+              <Info size={16} />
+              <span>
+                Currently optimizing for <strong>{optimizationGoal === 'cost' ? 'Cheapest' : 'Fastest'}</strong>. Showing the itinerary with the lowest {optimizationGoal === 'cost' ? 'financial impact' : 'transit time'}.
+              </span>
+            </div>
+          </div>
+
+          {/* TOP STATS CARDS */}
+          <section className="stats-grid">
+            {/* BEST START DATE (HERO) */}
+            <div className="stat-card glass-panel highlight-card">
+              <div className="card-glow"></div>
+              <div className="stat-icon-wrapper savings-icon">
+                <Award size={28} />
+              </div>
+              <div className="stat-info">
+                <p className="stat-label">Best Start Date</p>
+                <h3>{formatDateString(activeRecommended?.start_date)}</h3>
+                <p className="stat-helper text-emerald">
+                  <Compass size={14} /> Save â‚¹{Math.round(activeSavings)} (vs avg)
+                </p>
+              </div>
+            </div>
+
+            {/* CHEAPEST TOTAL COST */}
+            <div className="stat-card glass-panel">
+              <div className="stat-icon-wrapper cost-icon">
+                <CreditCard size={28} />
+              </div>
+              <div className="stat-info">
+                <p className="stat-label">Cheapest Total Cost</p>
+                <h3>â‚¹{cheapestItinerary?.total_cost}</h3>
+                <p className="stat-helper text-muted">All legs included</p>
+              </div>
+            </div>
+
+            {/* FASTEST TRIP COST */}
+            <div className="stat-card glass-panel">
+              <div className="stat-icon-wrapper fastest-icon">
+                <Zap size={28} />
+              </div>
+              <div className="stat-info">
+                <p className="stat-label">Fastest Trip Cost</p>
+                <h3>â‚¹{fastestItinerary?.total_cost}</h3>
+                <p className="stat-helper text-cyan" style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                  <Clock size={10} /> Trip: {fastestItinerary?.total_duration_str}
+                </p>
+              </div>
+            </div>
+          </section>
+
+          {/* CHART CONTAINER */}
+          <section className="chart-section glass-panel">
+            <div className="chart-header">
+              <div>
+                <h3>Trip Analytics Dashboard</h3>
+                <p className="subtitle">Compare Cost, Active Transit Time & Elapsed Duration per Departure Date</p>
+              </div>
+              <div className="chart-legend">
+                <span className="legend-cheapest"><span className="dot"></span> Selected Date</span>
+                <span className="legend-standard"><span className="dot"></span> Other Dates</span>
+                <span className="legend-soldout"><span className="dot"></span> Sold Out / Unavailable</span>
+              </div>
+            </div>
+
+            <div className="charts-container charts-container-3">
+              <div className="chart-box">
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+                  <CreditCard size={14} style={{ color: 'var(--accent-purple)' }} />
+                  <h4 className="chart-box-title" style={{ margin: 0, fontSize: '13px', fontWeight: '600', color: 'var(--text-secondary)' }}>
+                    Trip Cost (INR)
+                  </h4>
+                </div>
+                <div className="chart-wrapper">
+                  <canvas ref={costChartRef} id="cost-chart"></canvas>
+                </div>
+              </div>
+
+              <div className="chart-box">
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+                  <Zap size={14} style={{ color: '#3b82f6' }} />
+                  <h4 className="chart-box-title" style={{ margin: 0, fontSize: '13px', fontWeight: '600', color: '#3b82f6' }}>
+                    Active Transit Time (Hours)
+                  </h4>
+                </div>
+                <div className="chart-wrapper">
+                  <canvas ref={transitChartRef} id="transit-chart"></canvas>
+                </div>
+              </div>
+
+              <div className="chart-box">
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+                  <Clock size={14} style={{ color: '#06b6d4' }} />
+                  <h4 className="chart-box-title" style={{ margin: 0, fontSize: '13px', fontWeight: '600', color: '#06b6d4' }}>
+                    Total Trip Duration (Days)
+                  </h4>
+                </div>
+                <div className="chart-wrapper">
+                  <canvas ref={durationChartRef} id="duration-chart"></canvas>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* ITINERARY TIMELINE & BREAKDOWN */}
+          <section className="details-grid">
+
+            {/* LEFT COLUMN: Timeline */}
+            <div className="timeline-column glass-panel">
+              <div className="panel-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
+                <div>
+                  <h3>Itinerary Timeline</h3>
+                  <p className="subtitle">Detailed breakdown for trip starting on {formatDateString(activeItinerary?.start_date)}</p>
+                </div>
+                <button
+                  className={`btn btn-secondary btn-sm ${preferredDate === activeOptionDate ? 'btn-preferred-active' : ''}`}
+                  style={{ borderRadius: '20px' }}
+                  onClick={() => setPreferredDate(preferredDate === activeOptionDate ? null : activeOptionDate)}
+                >
+                  <Check size={12} /> {preferredDate === activeOptionDate ? 'Locked Preference' : 'Set as Preference'}
+                </button>
+              </div>
+
+              {/* DATE SELECTOR STRIP */}
+              <div className="date-selector-strip">
+                {processedOptions.map(opt => {
+                  const isCheapest = opt.start_date === cheapestItinerary?.start_date
+                  const isFastest = opt.start_date === fastestItinerary?.start_date
+                  const isActive = opt.start_date === activeOptionDate
+                  const isPreferred = opt.start_date === preferredDate
+
+                  const d = new Date(opt.start_date)
+                  const weekday = d.toLocaleDateString('en-US', { weekday: 'short' })
+                  const dayNum = d.toLocaleDateString('en-US', { day: 'numeric', month: 'short' })
+
+                  return (
+                    <div
+                      key={opt.start_date}
+                      className={`date-card ${isActive ? 'active' : ''} ${!opt.available ? 'sold-out' : ''} ${isPreferred ? 'preferred-choice' : ''}`}
+                      onClick={() => opt.available && setActiveOptionDate(opt.start_date)}
+                    >
+                      {isPreferred && (
+                        <span className="date-card-badge badge-cheapest-date" style={{ background: '#10b981', color: '#fff' }}>â­ Locked</span>
+                      )}
+                      {!isPreferred && isCheapest && (
+                        <span className="date-card-badge badge-cheapest-date">Cheapest</span>
+                      )}
+                      {!isPreferred && !isCheapest && isFastest && (
+                        <span className="date-card-badge badge-cheapest-date" style={{ background: '#06b6d4', color: '#fff' }}>Fastest</span>
+                      )}
+                      {!opt.available && (
+                        <span className="date-card-badge badge-soldout-date">Sold Out</span>
+                      )}
+
+                      {opt.available && (
+                        <button
+                          className={`date-card-lock-btn ${isPreferred ? 'locked' : ''}`}
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            setPreferredDate(isPreferred ? null : opt.start_date)
+                          }}
+                          title="Lock Date Option"
+                        >
+                          {isPreferred ? <Lock size={10} /> : <Unlock size={10} />}
+                        </button>
+                      )}
+
+                      <span className="date-card-weekday">{weekday}</span>
+                      <span className="date-card-day">{dayNum}</span>
+                      <span className="date-card-price">{opt.available ? `â‚¹${opt.total_cost}` : 'â€”'}</span>
+                    </div>
+                  )
+                })}
+              </div>
+
+              {/* TIMELINE CONTAINER */}
+              <div className="timeline-container">
+                {activeItinerary?.legs?.map((leg, legIdx) => {
+                  const isLast = legIdx === activeItinerary.legs.length - 1
+                  return (
+                    <div key={legIdx} className="timeline-node" style={{ position: 'relative' }}>
+                      {leg.loading && (
+                        <div className="card-mini-loader">
+                          <Compass className="animate-spin" /> Querying Travel APIs...
+                        </div>
+                      )}
+
+                      <div className={`timeline-indicator ${legIdx === 0 ? 'ind-start' : (leg.mode === 'flight' ? 'ind-flight' : leg.mode === 'train' ? 'ind-train' : 'ind-bus')}`}>
+                        {legIdx === 0 ? <MapPin size={12} /> : (leg.mode === 'flight' ? <Plane size={12} /> : <Train size={12} />)}
+                      </div>
+
+                      <div className="timeline-content">
+                        <div className="timeline-content-header">
+                          <h4>
+                            {leg.from_city} <ArrowRight size={14} style={{ display: 'inline', margin: '0 6px', verticalAlign: 'middle' }} /> {leg.to_city}
+                          </h4>
+                          <span className="timeline-date">{formatDateString(leg.date)}</span>
+                        </div>
+
+                        <div className="timeline-metrics" style={{ margin: '8px 0', display: 'flex', flexWrap: 'wrap', gap: '16px' }}>
+                          <span style={{ color: 'var(--accent-purple)', fontWeight: '700' }}><CreditCard size={14} /> â‚¹{leg.cost}</span>
+                          <span><Clock size={14} /> {leg.duration}</span>
+                          <span>Dep: {leg.etd} â€“ Arr: {leg.eta}</span>
+
+                          {/* CLASS SELECTOR */}
+                          {leg.mode === 'train' && (
+                            <div className="train-class-select-container">
+                              <span className="train-class-label">Class</span>
+                              <select
+                                className="train-class-select"
+                                value={leg.selected_class}
+                                onChange={(e) => handleLegClassChange(legIdx, e.target.value)}
+                              >
+                                {['SL', '3A', '2A', '1A'].map(tc => (
+                                  <option key={tc} value={tc}>{tc}</option>
+                                ))}
+                              </select>
+                            </div>
+                          )}
+
+                          {leg.mode === 'flight' && (
+                            <div className="flight-class-select-container">
+                              <span className="flight-class-label">Class</span>
+                              <select
+                                className="flight-class-select"
+                                value={leg.selected_class}
+                                onChange={(e) => handleLegClassChange(legIdx, e.target.value)}
+                              >
+                                {['Economy', 'Business'].map(fc => (
+                                  <option key={fc} value={fc}>{fc}</option>
+                                ))}
+                              </select>
+                            </div>
+                          )}
+
+                          {/* LEG LOCK BUTTON */}
+                          <button
+                            className={`leg-lock-btn ${leg.locked ? 'locked' : ''}`}
+                            onClick={() => handleToggleLegLock(legIdx)}
+                            title={leg.locked ? 'Unlock choice' : 'Lock choice'}
+                          >
+                            {leg.locked ? <Lock size={10} style={{ display: 'inline', marginRight: '4px' }} /> : <Unlock size={10} style={{ display: 'inline', marginRight: '4px' }} />}
+                            {leg.locked ? 'Locked' : 'Lock Leg'}
+                          </button>
+                        </div>
+
+                        <p style={{ fontSize: '11px', color: 'var(--text-muted)', margin: '4px 0' }}>
+                          Active Transport: <strong>{leg.transport_name}</strong>
+                        </p>
+
+                        {/* ALTERNATIVES PREMIUM TABLE */}
+                        {leg.alternatives && leg.alternatives.length > 0 && (
+                          <div className="alternatives-container">
+                            <table className="alternatives-table">
+                              <thead>
+                                <tr>
+                                  <th>Alternative Option</th>
+                                  <th>Times</th>
+                                  <th>Duration</th>
+                                  <th>Cost</th>
+                                  <th>Action</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {leg.alternatives.map((alt, altIdx) => {
+                                  const altCost = leg.mode === 'train'
+                                    ? Math.ceil((alt.classAvailability?.find(ca => ca.class === leg.selected_class)?.fare || leg.cost))
+                                    : Math.ceil(alt.price !== undefined ? alt.price : alt.cost)
+
+                                  const isSelected = leg.mode === 'train'
+                                    ? leg.selected_train_number === alt.trainNumber
+                                    : leg.selected_flight_name === alt.transport_name
+
+                                  return (
+                                    <tr key={altIdx} style={isSelected ? { background: 'rgba(139, 92, 246, 0.1)' } : {}}>
+                                      <td>
+                                        <div className="alternatives-carrier">
+                                          {leg.mode === 'flight' ? <Plane size={12} /> : <Train size={12} />}
+                                          {leg.mode === 'flight' ? alt.transport_name : `${alt.trainNumber} - ${alt.trainName}`}
+                                        </div>
+                                        {leg.mode === 'train' && (
+                                          <div className="train-meta-details">
+                                            <span className="train-rating">â˜… {alt.rating || '4.0'}</span>
+                                            <span className={`train-pantry ${alt.hasPantry ? 'has-pantry' : ''}`}>
+                                              Pantry: {alt.hasPantry ? 'Yes' : 'No'}
+                                            </span>
+                                          </div>
+                                        )}
+                                      </td>
+                                      <td>{alt.etd} â€“ {alt.eta}</td>
+                                      <td>{alt.duration}</td>
+                                      <td className="alternatives-price">â‚¹{altCost}</td>
+                                      <td>
+                                        <button
+                                          className={`btn btn-secondary btn-sm`}
+                                          style={{ padding: '4px 8px', fontSize: '10px' }}
+                                          onClick={() => handleSwapAlternative(legIdx, alt)}
+                                        >
+                                          {isSelected ? 'Selected' : 'Swap'}
+                                        </button>
+                                      </td>
+                                    </tr>
+                                  )
+                                })}
+                              </tbody>
+                            </table>
+                          </div>
+                        )}
+
+                        {/* NIGHTS STAY BANNER */}
+                        {leg.nights > 0 && (
+                          <div className="timeline-stay">
+                            <Compass size={14} /> Stay {leg.nights} Nights in {leg.to_city}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )
+                })}
+
+                {/* FINAL TERMINAL NODE */}
+                <div className="timeline-node">
+                  <div className="timeline-indicator ind-end">
+                    <Award size={12} />
+                  </div>
+                  <div className="timeline-content" style={{ background: 'rgba(244, 63, 94, 0.05)', borderColor: 'rgba(244, 63, 94, 0.15)' }}>
+                    <div className="timeline-content-header">
+                      <h4 style={{ color: 'var(--color-danger)' }}>Final Destination Reached!</h4>
+                      <span className="timeline-date" style={{ color: 'var(--color-danger)' }}>
+                        {formatDateString(activeItinerary?.arrival_date)}
+                      </span>
+                    </div>
+                    <p style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
+                      End of voyage at <strong>{destinationCity}</strong>. All multi-leg date optimization windows mapped successfully!
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* RIGHT COLUMN: Journey Summary */}
+            <div className="summary-column glass-panel">
+              <div className="panel-header">
+                <h3>Journey Summary</h3>
+                <p className="subtitle">Key insights and details</p>
+              </div>
+
+              <div className="journey-stats-card">
+                <div className="journey-summary-row">
+                  <span className="label"><Plane size={12} style={{ display: 'inline', verticalAlign: 'middle', marginRight: '5px' }} /> Departs:</span>
+                  <span className="value" style={{ color: 'var(--accent-purple)', fontWeight: '700' }}>
+                    {formatDateString(activeItinerary?.start_date)}
+                  </span>
+                </div>
+                <div className="journey-summary-row">
+                  <span className="label"><Award size={12} style={{ display: 'inline', verticalAlign: 'middle', marginRight: '5px' }} /> Arrives:</span>
+                  <span className="value" style={{ color: '#10b981', fontWeight: '700' }}>
+                    {formatDateString(activeItinerary?.arrival_date)}
+                  </span>
+                </div>
+                <div className="journey-summary-row" style={{ borderTop: '1px solid rgba(255,255,255,0.05)', marginTop: '6px', paddingTop: '10px' }}>
+                  <span className="label">Total Stops:</span>
+                  <span className="value">{activeItinerary?.legs?.length - 1}</span>
+                </div>
+                <div className="journey-summary-row">
+                  <span className="label">Total Nights:</span>
+                  <span className="value">{activeItinerary?.legs?.reduce((sum, l) => sum + (l.nights || 0), 0)}</span>
+                </div>
+                <div className="journey-summary-row">
+                  <span className="label">Trip Duration (Elapsed):</span>
+                  <span className="value">{activeItinerary?.total_duration_str}</span>
+                </div>
+                <div className="journey-summary-row">
+                  <span className="label">Active Travel Time:</span>
+                  <span className="value" style={{ color: 'var(--accent-cyan)', fontWeight: '700' }}>
+                    {formatMinutesToHoursMins(getActiveTravelMins(activeItinerary))}
+                  </span>
+                </div>
+              </div>
+
+              <div className="travel-advisory-card">
+                <div className="advisory-icon"><ShieldCheck size={24} /></div>
+                <div>
+                  <h4>Voyage Guarantee</h4>
+                  <p>We automatically filter out any start dates that contain sold-out legs, ensuring 100% reservation confidence.</p>
+                </div>
+              </div>
+            </div>
+
+          </section>
+
+        </div>
+      )}
 
     </div>
   )
 }
+
